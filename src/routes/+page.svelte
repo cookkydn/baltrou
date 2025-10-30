@@ -1,2 +1,5 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<div class="content-box">
+	<h1>Welcome to B.A.L.T.R.O.U.</h1>
+	<p>Broadcast Asset Live Tool for Real-time Overlay Utility</p>
+	<p>C'est marrant et ça c'est drôle</p>
+</div>

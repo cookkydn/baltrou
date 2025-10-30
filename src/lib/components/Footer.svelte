@@ -1,0 +1,65 @@
+<script lang="ts">
+	import EyeIcon from './icons/EyeIcon.svelte';
+	import GemIcon from './icons/GemIcon.svelte';
+	import StarIcon from './icons/StarIcon.svelte';
+	import UserIcon from './icons/UserIcon.svelte';
+
+	export let isLoggedIn: Boolean;
+</script>
+
+<footer>
+	<div class="footer-left">
+		<span>b.a.l.t.r.o.u, powered by Potato corp ❤️</span>
+	</div>
+	{#if isLoggedIn}
+		<div class="footer-center">
+			<div class="stat-item">
+				<EyeIcon />
+				<span>1,234</span>
+			</div>
+			<div class="stat-item">
+				<UserIcon />
+				<span>12.3k</span>
+			</div>
+			<div class="stat-item">
+				<StarIcon />
+				<span>42</span>
+			</div>
+			<div class="stat-item">
+				<GemIcon />
+				<span>1,000</span>
+			</div>
+		</div>
+		<div class="footer-right">
+			Live status incoming
+			<!-- <LiveStatus /> -->
+		</div>
+	{/if}
+</footer>
+
+<style>
+	footer {
+		background-color: var(--menu-bg);
+		padding: 0.5rem 1rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 0.9rem;
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.footer-center {
+		display: flex;
+        justify-content: center;
+		gap: 1.5rem;
+	}
+
+	.footer-right {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+</style>
