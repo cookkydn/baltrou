@@ -35,7 +35,6 @@ export async function GET({ locals }) {
 	let unsubscribe = () => {};
 	const stream = new ReadableStream({
 		start(controller) {
-			// 2. Fonction d'envoi SSE
 			const sendEvent = (data: ChatMessage) => {
 				const jsonData = JSON.stringify(data);
 				const event = `data: ${jsonData}\n\n`;
@@ -43,11 +42,9 @@ export async function GET({ locals }) {
 			};
             sendEvent({id:"",user:"System",color:"#000000",message:"Connected to API"})
 
-			// 3. Abonnez-vous au service persistant
 			unsubscribe = subscribeToChatEvents(sendEvent);
 		},
 		cancel() {
-			// 4. Se désabonner du service lorsque la connexion est coupée
 			unsubscribe();
 		}
 	});

@@ -2,16 +2,13 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import Footer from '$lib/components/Footer.svelte';
 	import { user } from '$lib/stores.js';
+	import { auth } from '$lib/stores/auth-store.js';
 	import { onMount } from 'svelte';
 
 	let { data, children } = $props();
 	onMount(async () => {
-		const response = await fetch('/api/user');
-		if (response.ok) {
-			$user = (await response.json());
-		} else {
-			$user = null;
-		}
+		console.log("Layout mounted")
+		$auth.loggedIn = data.isLoggedIn;
 	})
 </script>
 

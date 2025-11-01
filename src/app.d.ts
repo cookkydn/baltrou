@@ -1,14 +1,12 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
-
-import type { TwitchCredentials, TwitchUser } from "$lib/types";
+import type { Credentials } from "$lib/types/app";
 
 // for information about these interfaces
 declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			twitchCredentials: TwitchCredentials | null;
-			twitchUser : TwitchUser | null;
+			credentials: Credentials;
 		}
 		// interface PageData {}
 		// interface PageState {}

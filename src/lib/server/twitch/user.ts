@@ -1,11 +1,11 @@
-import { PUBLIC_TWITCH_CLIENT_ID } from "$env/static/public";
+import { TWITCH_CLIENT_ID } from "$env/static/private";
 import type { TwitchUser } from "$lib/types";
 
 export async function getTwitchUserInfo(accessToken: string): Promise<TwitchUser|null> {
     const response = await fetch('https://api.twitch.tv/helix/users', {
         headers: {
             'Authorization': `Bearer ${accessToken}`,
-            'Client-ID': PUBLIC_TWITCH_CLIENT_ID
+            'Client-ID': TWITCH_CLIENT_ID
         }
     });
 

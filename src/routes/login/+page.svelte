@@ -1,24 +1,6 @@
-<script>
-	import { page } from "$app/state";
-	import { PUBLIC_TWITCH_CLIENT_ID, PUBLIC_TWITCH_SCOPE } from "$env/static/public";
-	import { onMount } from "svelte";
-
-    let twitchOauthUrl="";
-    
-    onMount(()=> {
-        const url = new URL("https://id.twitch.tv/oauth2/authorize");
-        url.searchParams.set("client_id",PUBLIC_TWITCH_CLIENT_ID);
-        url.searchParams.set("response_type","code");
-        url.searchParams.set("scope",PUBLIC_TWITCH_SCOPE);
-        url.searchParams.set("force_verify","true");
-        url.searchParams.set("redirect_uri",`${page.url.origin}/api/auth/callback`);
-        twitchOauthUrl = url.toString();
-    
-    })
-</script>
 <div class="content-box">
 	<h1>Connexion</h1>
-	<a href={twitchOauthUrl.toString()} class="twitch-connect-button">Connexion à Twitch</a>
+	<a href="/api/auth/login" class="twitch-connect-button">Connexion à Twitch</a>
 </div>
 
 <style>
