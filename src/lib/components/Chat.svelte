@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { chatStore, pinnedMessage, user } from "$lib/stores";
-	import type { ChatMessage } from "$lib/types";
-	import PinIcon from "./icons/PinIcon.svelte";
-    let messageToSend = "";
-    
-    function pinMessage(message: ChatMessage) {
-        $pinnedMessage = message;
-    }
+	import { chat } from '$lib/stores/chat-store';
+	import type { ChatMessage } from '$lib/types/app';
+	import PinIcon from './icons/PinIcon.svelte';
+	let messageToSend = '';
 
-    async function sendMessage() {
-        if (messageToSend.trim() === '') return;
+	function pinMessage(message: ChatMessage) {
+		$chat.pinnedMessage = message;
+	}
+
+	async function sendMessage() {
+		if (messageToSend.trim() === '') return;
 		try {
 			await fetch('/api/chat', {
 				method: 'POST',
@@ -23,15 +23,14 @@
 		} finally {
 			messageToSend = '';
 		}
-    }
+	}
 </script>
 
-
 <div class="chat-container">
-    <h2>Chat</h2>
-    <div class="chat-messages">
-        {#each $chatStore as message (message)}
-            <div class="message">
+	<h2>Chat</h2>
+	<div class="chat-messages">
+		{#each $chat.messages as message (message)}
+			<div class="message">
 				<div class="message-content">
 					<strong style="color: {message.color}">{message.user}:</strong>
 					<span>{message.message}</span>
@@ -39,25 +38,21 @@
 				<button class="pin-button" onclick={() => pinMessage(message)}>
 					<PinIcon />
 				</button>
-            </div>
-        {/each}
-    </div>
-    <div class="chat-input">
-        <input 
-            type="text" 
-            placeholder="Envoyer un message..."
-            bind:value={messageToSend} 
-            onkeydown={(e) => { 
-                if (e.key === 'Enter') sendMessage(); 
-            }}
-        >
-        <button onclick={sendMessage} disabled={!$user || messageToSend.trim() === ''}>
-            Envoyer
-        </button>
-   
-    </div>
+			</div>
+		{/each}
+	</div>
+	<div class="chat-input">
+		<input
+			type="text"
+			placeholder="Envoyer un message..."
+			bind:value={messageToSend}
+			onkeydown={(e) => {
+				if (e.key === 'Enter') sendMessage();
+			}}
+		/>
+		<button onclick={sendMessage} disabled={messageToSend.trim() === ''}> Envoyer </button>
+	</div>
 </div>
-
 
 <style>
 	.chat-container {
@@ -111,7 +106,6 @@
 		cursor: pointer;
 	}
 
-
 	.chat-input {
 		display: flex;
 	}
@@ -126,7 +120,7 @@
 	}
 
 	.chat-input button {
-		background-color: #2196F3;
+		background-color: #2196f3;
 		border: none;
 		color: white;
 		padding: 0.5rem 1rem;

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { auth } from '$lib/stores/auth-store';
+	import { stream } from '$lib/stores/stream-store';
 </script>
 
 <div class="content-box">
@@ -11,6 +12,7 @@
 <div class="content-box debug">
 	<h2>Debug infos</h2>
 	<p>loggedIn: {$auth.loggedIn}</p>
+	<p>stream: {JSON.stringify($stream,null,2)}</p>
 </div>
 
 <style>

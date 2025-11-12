@@ -1,21 +1,21 @@
 <script>
-	import { pinnedMessage } from '$lib/stores';
+	import { chat } from '$lib/stores/chat-store';
 	import CloseIcon from './icons/CloseIcon.svelte';
 
 	function unpinMessage() {
-		$pinnedMessage = null;
+		$chat.pinnedMessage = null;
 	}
 </script>
 
-{#if $pinnedMessage != null}
+{#if $chat.pinnedMessage != null}
 	<div class="pinned-message">
 		<button class="close-button" onclick={unpinMessage}>
 			<CloseIcon />
 		</button>
 		<h2>Message Épinglé</h2>
 		<div class="message">
-			<strong style="color: {$pinnedMessage.color}">{$pinnedMessage.user}:</strong>
-			<span>{$pinnedMessage.message}</span>
+			<strong style="color: {$chat.pinnedMessage.color}">{$chat.pinnedMessage.user}:</strong>
+			<span>{$chat.pinnedMessage.message}</span>
 		</div>
 	</div>
 {/if}

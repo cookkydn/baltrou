@@ -3,7 +3,8 @@
 	import GemIcon from './icons/GemIcon.svelte';
 	import StarIcon from './icons/StarIcon.svelte';
 	import UserIcon from './icons/UserIcon.svelte';
-
+	import LiveStatus from './LiveStatus.svelte';
+	import { stream } from '$lib/stores/stream-store';
 	export let isLoggedIn: Boolean;
 </script>
 
@@ -15,7 +16,7 @@
 		<div class="footer-center">
 			<div class="stat-item">
 				<EyeIcon />
-				<span>1,234</span>
+				<span>{$stream.viewer_count}</span>
 			</div>
 			<div class="stat-item">
 				<UserIcon />
@@ -31,8 +32,7 @@
 			</div>
 		</div>
 		<div class="footer-right">
-			Live status incoming
-			<!-- <LiveStatus /> -->
+			<LiveStatus></LiveStatus>
 		</div>
 	{/if}
 </footer>
@@ -41,8 +41,9 @@
 	footer {
 		background-color: var(--menu-bg);
 		padding: 0.5rem 1rem;
-		display: flex;
-		justify-content: space-between;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr; 
+
 		align-items: center;
 		font-size: 0.9rem;
 		position: fixed;
@@ -53,13 +54,23 @@
 
 	.footer-center {
 		display: flex;
-        justify-content: center;
+		justify-content: center;
 		gap: 1.5rem;
 	}
 
 	.footer-right {
 		display: flex;
 		align-items: center;
+		justify-self: end;
 		gap: 0.5rem;
+	}
+
+	.stat-item {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.stat-item span {
+		margin: 0 5px;
 	}
 </style>

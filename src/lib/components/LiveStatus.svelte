@@ -1,0 +1,52 @@
+<script>
+	import { stream } from '$lib/stores/stream-store';
+</script>
+
+{#if $stream.isLive}
+	<div class="live-status-container live">
+		<span>En direct</span>
+		<div class="live-dot"></div>
+	</div>
+{:else}
+	<div class="live-status-container offline">
+		<span>Hors ligne</span>
+		<div class="offline-dot"></div>
+	</div>
+{/if}
+
+<style>
+	.live-status-container {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.9rem;
+	}
+
+	.live-dot,
+	.offline-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+	}
+
+	.live-dot {
+		background-color: #00ff00;
+		animation: ping 2s infinite;
+	}
+
+	.offline-dot {
+		background-color: #808080; /* Grey */
+	}
+
+	@keyframes ping {
+		0% {
+			box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+		}
+		70% {
+			box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+		}
+		100% {
+			box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+		}
+	}
+</style>

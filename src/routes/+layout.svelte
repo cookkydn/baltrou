@@ -1,14 +1,17 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
+	import { startListening, stopListening } from '$lib/background-service.js';
 	import Footer from '$lib/components/Footer.svelte';
-	import { user } from '$lib/stores.js';
 	import { auth } from '$lib/stores/auth-store.js';
 	import { onMount } from 'svelte';
 
 	let { data, children } = $props();
 	onMount(async () => {
-		console.log("Layout mounted")
 		$auth.loggedIn = data.isLoggedIn;
+		auth.subscribe((authState)=> {
+			if(authState.loggedIn) startListening();
+			else stopListening();
+		})
 	})
 </script>
 
@@ -22,7 +25,8 @@
 		<div>
 			{#if data.isLoggedIn}
 				<a href="/communaute">Communauté</a>
-				<!-- <a href="/stats">Statistiques</a>
+				<a href="/stats">Statistiques</a>
+				<!-- 
 				<a href="/controles">Contrôles</a>
 				<a href="/ambiance">Ambiance</a>
 				<a href="/annonces">Annonces</a>
