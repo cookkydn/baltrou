@@ -4,12 +4,14 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import { auth } from '$lib/stores/auth-store.js';
 	import { chat } from '$lib/stores/chat-store.js';
+	import { stats } from '$lib/stores/stats-store.js';
 	import { onMount } from 'svelte';
 
 	let { data, children } = $props();
 	onMount(async () => {
 		$auth = data.isLoggedIn;
 		$chat;
+		$stats;
 	})
 </script>
 
@@ -85,8 +87,7 @@
 	}
 
 	main {
-		padding: 2rem;
-		padding-bottom: 5rem; /* Add padding to avoid overlap with fixed footer */
+		padding: 0 2rem;
 	}
 
 	nav a::after {

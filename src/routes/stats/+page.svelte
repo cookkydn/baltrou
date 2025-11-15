@@ -1,8 +1,10 @@
 <script>
-	import LiveStatus from "$lib/components/LiveStatus.svelte";
-    import { chat } from "$lib/stores/chat-store";
-    import { stream } from "$lib/stores/stream-store";
+	import LiveStatus from '$lib/components/LiveStatus.svelte';
+	import ViewerGraph from '$lib/components/ViewerGraph.svelte';
+	import { chat } from '$lib/stores/chat-store';
+	import { stats } from '$lib/stores/stats-store';
 </script>
+
 <h1>Statistiques du Stream</h1>
 
 <div class="stats-grid">
@@ -13,31 +15,30 @@
 
 	<div class="stat-card">
 		<h2>Viewers</h2>
-		<p>{$stream.viewer_count}</p>
+		<p>{$stats.viewerCount}</p>
 	</div>
 
 	<div class="stat-card">
 		<h2>Commentaires</h2>
-		<p>{$chat.messageCount}</p>
+		<p>{$chat.messages.length}</p>
 	</div>
 
 	<div class="stat-card">
 		<h2>Followers</h2>
-		<p>N/A</p>
+		<p>{$stats.followerCount}</p>
 	</div>
 
 	<div class="stat-card">
 		<h2>Abonnés</h2>
-		<p>N/A</p>
+		<p>{$stats.subscriberCount}</p>
 	</div>
 
 	<div class="stat-card full-width">
 		<h2>Viewers au cours du temps</h2>
 		<!-- Le graphique sera inséré ici -->
-		<div class="chart-placeholder">Graphique à venir</div>
+		<ViewerGraph></ViewerGraph>
 	</div>
 </div>
-
 
 <style>
 	.stats-grid {
@@ -57,22 +58,11 @@
 		align-items: center;
 		justify-content: center;
 	}
-    .stat-card p {
-        margin: 0;
-    }
+	.stat-card p {
+		margin: 0;
+	}
 
 	.full-width {
 		grid-column: 1 / -1;
-	}
-
-	.chart-placeholder {
-		width: 100%;
-		height: 300px;
-		background-color: rgba(255, 255, 255, 0.1);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 8px;
-		margin-top: 1rem;
 	}
 </style>

@@ -4,7 +4,7 @@
 	import StarIcon from './icons/StarIcon.svelte';
 	import UserIcon from './icons/UserIcon.svelte';
 	import LiveStatus from './LiveStatus.svelte';
-	import { stream } from '$lib/stores/stream-store';
+	import { stats } from '$lib/stores/stats-store';
 	export let isLoggedIn: Boolean;
 </script>
 
@@ -16,19 +16,19 @@
 		<div class="footer-center">
 			<div class="stat-item">
 				<EyeIcon />
-				<span>{$stream.viewer_count}</span>
+				<span>{$stats.viewerCount}</span>
 			</div>
 			<div class="stat-item">
 				<UserIcon />
-				<span>12.3k</span>
+				<span>{$stats.followerCount}</span>
 			</div>
 			<div class="stat-item">
 				<StarIcon />
-				<span>42</span>
+				<span>{$stats.subscriberCount}</span>
 			</div>
 			<div class="stat-item">
 				<GemIcon />
-				<span>1,000</span>
+				<span>{$stats.totalBits}</span>
 			</div>
 		</div>
 		<div class="footer-right">
@@ -42,7 +42,7 @@
 		background-color: var(--menu-bg);
 		padding: 0.5rem 1rem;
 		display: grid;
-		grid-template-columns: 1fr auto 1fr; 
+		grid-template-columns: 1fr auto 1fr;
 
 		align-items: center;
 		font-size: 0.9rem;

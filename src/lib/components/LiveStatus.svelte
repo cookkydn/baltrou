@@ -1,18 +1,20 @@
 <script>
-	import { stream } from '$lib/stores/stream-store';
+	import { stats } from "$lib/stores/stats-store";
+
 </script>
 
-{#if $stream.isLive}
+{#if $stats.isLive}
 	<div class="live-status-container live">
 		<span>En direct</span>
 		<div class="live-dot"></div>
 	</div>
 {:else}
-	<div class="live-status-container offline">
-		<span>Hors ligne</span>
-		<div class="offline-dot"></div>
-	</div>
+<div class="live-status-container offline">
+	<span>Hors ligne</span>
+	<div class="offline-dot"></div>
+</div>
 {/if}
+
 
 <style>
 	.live-status-container {

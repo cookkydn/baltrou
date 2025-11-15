@@ -16,6 +16,58 @@ export class TwitchApiWrapper {
   }
 
   /**
+   * Récupère les infos du stream (live/viewers)
+   */
+  public async getStreamInfo() {
+    const url = `https://api.twitch.tv/helix/streams?user_id=${this.userId}`;
+    const response = await this.fetchWithRefresh(url, { method: 'GET' });
+    if (!response.ok) return null;
+    const data = await response.json();
+    return data.data[0] || null; // Retourne le stream ou null si offline
+  }
+
+  /**
+   * Récupère le nombre total de followers
+   */
+  public async getFollowerCount() {
+    const url = `https://api.twitch.tv/helix/channels/followers?broadcaster_id=${this.userId}`;
+    const response = await this.fetchWithRefresh(url, { method: 'GET' });
+    if (!response.ok) return null;
+    const data = await response.json();
+    return data.total as number;
+  }
+
+  /**
+   * Récupère le nombre total d'abonnés
+   * NÉCESSITE LE SCOPE: channel:read:subscriptions
+   */
+  public async getSubscriberCount() {
+    const url = `https://api.twitch.tv/helix/subscriptions?broadcaster_id=${this.userId}`;
+    const response = await this.fetchWithRefresh(url, { method: 'GET' });
+    if (!response.ok) return null;
+    const data = await response.json();
+    return data.total as number;
+  }
+
+  /**
+   * Récupère le total des bits (via le leaderboard)
+   * NÉCESSITE LE SCOPE: bits:read
+   */
+  public async getBitsTotal() {
+    // Récupère le leaderboard 'alltime'
+    const url = `https://api.twitch.tv/helix/bits/leaderboard?count=100`;
+    const response = await this.fetchWithRefresh(url, { method: 'GET' });
+    if (!response.ok) return null;
+    const data = await response.json();
+    
+    // Calcule le total des bits
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const totalBits = data.data.reduce((sum: number, entry: any) => sum + entry.score, 0);
+    return totalBits as number;
+  }
+
+
+  /**
    * Envoie un message au chat en tant que l'utilisateur.
    * C'est l'utilisateur (diffuseur) qui parle dans son propre canal.
    */
@@ -45,7 +97,6 @@ export class TwitchApiWrapper {
   private async fetchWithRefresh(url: string, options: RequestInit) {
     // 1. Essayer avec le token actuel
     let response = await this.makeApiRequest(url, options);
-
     // 2. Si 401 (token expiré), rafraîchir et réessayer
     if (response.status === 401) {
       console.log('[TwitchWrapper] Token expiré, tentative de rafraîchissement...');

@@ -52,3 +52,8 @@ export async function updateCredentials(user_id:string, credentials: Credentials
     })
     await db.write();
 }
+
+export async function getAllUsers(){
+	await db.read();
+	return db.data.users;
+}

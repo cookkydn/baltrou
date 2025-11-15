@@ -1,8 +1,7 @@
 import { TWITCH_CLIENT_ID, TWITCH_SCOPE } from '$env/static/private';
 import { redirect } from '@sveltejs/kit';
 
-export async function GET({ locals, url }) {
-	if (locals.credentials && locals.credentials.twitch) return redirect(302, '/');
+export async function GET({ url }) {
 
 	const oauthURL = new URL('https://id.twitch.tv/oauth2/authorize');
 	oauthURL.searchParams.set('client_id', TWITCH_CLIENT_ID);

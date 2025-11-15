@@ -1,3 +1,4 @@
+import { processUser } from '$lib/server/cron.js';
 import eventBus from '$lib/server/event-bus';
 import { ircManager } from '$lib/server/irc.js';
 import { getUser } from '$lib/server/user.js';
@@ -31,7 +32,10 @@ export async function GET({ cookies }) {
 			};
 
 			eventBus.on(channel, handler);
+			
 			await ircManager.joinChannel(userId,user.user_login);
+			await processUser(user);
+
 			console.log(`[SSE] Client ${userId} connecté au SSE.`);
 			controller.enqueue(`event: connected\ndata: {"message": "Connexion SSE établie"}\n\n`);
 		},

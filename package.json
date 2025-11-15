@@ -34,6 +34,9 @@
 		"vite": "^7.1.7"
 	},
 	"dependencies": {
+		"chart.js": "^4.5.1",
+		"chartjs-adapter-dayjs-4": "^1.0.4",
+		"dayjs": "^1.11.19",
 		"lowdb": "^7.0.1",
 		"node-cron": "^4.2.1",
 		"tmi.js": "^1.8.5"
