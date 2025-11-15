@@ -14,21 +14,3 @@ export type TwitchUser = {
 	email: string;
 	created_at: string;
 };
-/**
- * @deprecated
- */
-export type TwitchCredentials = {
-	userId: string;
-	token: string;
-	refreshToken: string;
-};
-
-/**
- * @deprecated
- */
-export type ChatMessage = {
-	id: string;
-	user: string;
-	message: string;
-	color: string;
-};

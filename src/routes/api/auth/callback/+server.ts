@@ -1,5 +1,7 @@
+import { dev } from '$app/environment';
 import { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET } from '$env/static/private';
-import { getTwitchUserInfo } from '$lib/server/twitch/user';
+import { addUser, getTwitchUserInfo, getUser, updateCredentials } from '$lib/server/user';
+import { TwitchApiError } from '$lib/types/twitch.js';
 import { redirect } from '@sveltejs/kit';
 
 /**
@@ -35,56 +37,35 @@ export async function GET({ url, cookies, fetch }) {
 	}
 
 	const tokenData = await tokenResponse.json();
-
-	cookies.set('twitch_access_token', tokenData.access_token, {
-		path: '/',
-		maxAge: tokenData.expires_in,
-		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: 'lax'
-	});
-
-	cookies.set('twitch_token_duration', tokenData.expires_in, {
-		path: '/',
-		maxAge: tokenData.expires_in,
-		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: 'lax'
-	});
-
-	cookies.set('twitch_refresh_token', tokenData.refresh_token, {
-		path: '/',
-		maxAge: 60 * 60 * 24 * 30 * 6, // 6 mois
-		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: 'lax'
-	});
-
 	const user = await getTwitchUserInfo(tokenData.access_token);
-	if (user) {
-		cookies.set('twitch_user_id', user.id, {
-			path: '/',
-			maxAge: 60 * 60 * 24 * 30 * 6, // 6 mois
-			httpOnly: true,
-			secure: process.env.NODE_ENV === 'production',
-			sameSite: 'lax'
-		});
-		cookies.set('twitch_user_login', user.login, {
-			path: '/',
-			maxAge: 60 * 60 * 24 * 30 * 6, // 6 mois
-			httpOnly: true,
-			secure: process.env.NODE_ENV === 'production',
-			sameSite: 'lax'
+	if (!user) {
+		console.error('Failed to fetch twitch user info');
+		cookies.delete('user_id', { path: '/' });
+		throw new TwitchApiError(404, 'Could not retreive twitch user info');
+	}
+	if ((await getUser(user.id)) != null) {
+		updateCredentials(user.id, {
+			access_token: tokenData.access_token,
+			expires_in: new Date(Date.now() + tokenData.expires_in * 1000),
+			refresh_token: tokenData.refresh_token
 		});
 	} else {
-		console.error('Unable to retreive user info');
-		cookies.delete('twitch_access_token', { path: '/' });
-		cookies.delete('twitch_token_duration', { path: '/' });
-		cookies.delete('twitch_refresh_token', { path: '/' });
-		cookies.delete('twitch_user_id', { path: '/' });
-		cookies.delete('twitch_user_login', { path: '/' });
-		throw redirect(302, '/login');
+		await addUser({
+			id: user.id,
+			user_login: user.login,
+			credentials: {
+				access_token: tokenData.access_token,
+				expires_in: new Date(Date.now() + tokenData.expires_in * 1000),
+				refresh_token: tokenData.refresh_token
+			}
+		});
 	}
 
+	cookies.set('user_id', user.id, {
+		path: '/',
+		secure: !dev,
+		httpOnly: true,
+		maxAge: 60 * 60 * 24 * 7
+	});
 	throw redirect(302, '/');
 }

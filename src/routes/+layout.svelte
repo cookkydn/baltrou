@@ -1,17 +1,15 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
-	import { startListening, stopListening } from '$lib/background-service.js';
+	import DebugPanel from '$lib/components/debug/DebugPanel.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import { auth } from '$lib/stores/auth-store.js';
+	import { chat } from '$lib/stores/chat-store.js';
 	import { onMount } from 'svelte';
 
 	let { data, children } = $props();
 	onMount(async () => {
-		$auth.loggedIn = data.isLoggedIn;
-		auth.subscribe((authState)=> {
-			if(authState.loggedIn) startListening();
-			else stopListening();
-		})
+		$auth = data.isLoggedIn;
+		$chat;
 	})
 </script>
 
@@ -40,6 +38,7 @@
 
 <main>
 	{@render children?.()}
+	<DebugPanel></DebugPanel>
 </main>
 
 <Footer isLoggedIn={data.isLoggedIn}></Footer>

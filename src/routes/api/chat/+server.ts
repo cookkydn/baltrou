@@ -1,51 +1,59 @@
-import { initializeTwitchClient, sendChatMessage, subscribeToChatEvents } from '$lib/server/twitch/chat.js';
-import type { ChatMessage } from '$lib/types/app';
-import { json } from '@sveltejs/kit';
+import { TwitchApiWrapper } from '$lib/server/twitch';
+import { getUser } from '$lib/server/user';
+import { error, json, type RequestEvent } from '@sveltejs/kit';
 
-/** @type {import('./$types').RequestHandler} */
-export async function GET({ locals }) {
-	
-	if (locals.credentials.twitch == null) {
-		return new Response('Unauthorized', { status: 401 });
-    }
-	
-	const headers = {
-		'Content-Type': 'text/event-stream',
-		'Cache-Control': 'no-cache',
-		Connection: 'keep-alive'
-	};
-	const options = {
-		identity: {
-			username: locals.credentials.twitch.userLogin,
-			password: `oauth:${locals.credentials.twitch.token}`
-		},
-		channels: [locals.credentials.twitch.userLogin]
-	};
-	await initializeTwitchClient(options);
-	let unsubscribe = () => {};
-	const stream = new ReadableStream({
-		start(controller) {
-			const sendEvent = (data: ChatMessage) => {
-				const jsonData = JSON.stringify(data);
-				const event = `data: ${jsonData}\n\n`;
-				controller.enqueue(event);
-			};
-            sendEvent({user:"System",color:"#000000",message:"Connected to API"})
+/**
+ * Gère l'envoi d'un message de chat via l'API Helix.
+ */
+export async function POST({ request, cookies }: RequestEvent) {
+	// 1. Vérifier l'authentification de l'utilisateur (cookie interne)
+	const userId = cookies.get('user_id');
+	if (!userId) {
+		throw error(401, 'Non autorisé (cookie manquant)');
+	}
 
-			unsubscribe = subscribeToChatEvents(sendEvent);
-		},
-		cancel() {
-			unsubscribe();
+	// 2. Récupérer le message du corps de la requête
+	let messageData: { message: string };
+	try {
+		messageData = await request.json();
+		if (!messageData.message || typeof messageData.message !== 'string') {
+			throw new Error('Message invalide');
 		}
-	});
+	} catch {
+		throw error(400, 'Corps de la requête invalide');
+	}
 
-	return new Response(stream, { headers });
-}
+	// 3. Récupérer les infos complètes de l'utilisateur (et ses tokens)
+	const userData = await getUser(userId);
+	if (!userData) {
+		throw error(404, 'Utilisateur ou configuration Twitch non trouvés');
+	}
 
-/** @type {import('./$types').RequestHandler} */
-export async function POST({ request, locals }) {
-    if (locals.credentials.twitch == null) {
-        return new Response('Unauthorized', { status: 401 });
-    }
-    return json(await sendChatMessage(locals.credentials.twitch.token, locals.credentials.twitch.userId, (await request.json()).message));
+	// 4. Créer une instance du Wrapper API pour cet utilisateur
+	// L'instance reçoit les credentials (qui incluent le refresh token)
+	const api = new TwitchApiWrapper(userData.credentials, userData.id);
+
+	// 5. Envoyer le message
+	try {
+		const apiResponse = await api.sendChatMessage(messageData.message);
+
+		if (!apiResponse.ok) {
+			// Si l'API renvoie une erreur (ex: 403 'Vous êtes banni')
+			const errorData = await apiResponse.json();
+			throw error(apiResponse.status, `Erreur API Twitch: ${errorData.message}`);
+		}
+
+		// Les données de TMI (lente) n'ont pas encore été envoyées.
+		// Votre composant Chat.svelte devrait ajouter le message
+		// "optimistiquement" (côté client) dès que l'utilisateur
+		// appuie sur "Envoyer".
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	} catch (err: any) {
+		console.error('[API Chat POST] Erreur:', err);
+		if (err.status) throw err; // Transférer les erreurs 'error()'
+		throw error(500, "Erreur interne lors de l'envoi du message");
+	}
+
+	return json({ success: true });
 }
