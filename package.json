@@ -39,6 +39,7 @@
 		"dayjs": "^1.11.19",
 		"lowdb": "^7.0.1",
 		"node-cron": "^4.2.1",
+		"obs-websocket-js": "^5.0.7",
 		"tmi.js": "^1.8.5"
 	}
 }

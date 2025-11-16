@@ -7,6 +7,7 @@
 	import { events } from '$lib/stores/event-store';
 	import { chat } from '$lib/stores/chat-store';
 	import { stats } from '$lib/stores/stats-store';
+	import { obsConnectionStatus,obsState } from '$lib/stores/obs-store';
 
 	/**
 	 * Une fonction 'replacer' pour JSON.stringify
@@ -25,12 +26,21 @@
 </script>
 
 <div class="debug-store-tab">
+	<!-- Store: OBS store -->
+	<div class="store-display">
+		<h3>obsConnectionStatus (OBS store)</h3>
+		<pre>{JSON.stringify($obsConnectionStatus, replacer, 2)}</pre>
+		<h3>obsScene (OBS store)</h3>
+		<pre>{JSON.stringify($obsState, replacer, 2)}</pre>
+	</div>
+
+	<!-- Store: stats store -->
 	<div class="store-display">
 		<h3>stats (Stats store)</h3>
 		<pre>{JSON.stringify($stats, replacer, 2)}</pre>
 	</div>
 
-	<!-- Store: chatStore -->
+	<!-- Store: chat store -->
 	<div class="store-display">
 		<h3>chat (Chat Store)</h3>
 		<pre>{JSON.stringify($chat, replacer, 2)}</pre>

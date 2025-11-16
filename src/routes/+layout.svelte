@@ -4,6 +4,7 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import { auth } from '$lib/stores/auth-store.js';
 	import { chat } from '$lib/stores/chat-store.js';
+	import { connectObs, obsConnectionStatus } from '$lib/stores/obs-store.js';
 	import { stats } from '$lib/stores/stats-store.js';
 	import { onMount } from 'svelte';
 
@@ -12,7 +13,9 @@
 		$auth = data.isLoggedIn;
 		$chat;
 		$stats;
-	})
+		$obsConnectionStatus;
+		connectObs();
+	});
 </script>
 
 <svelte:head>
@@ -24,13 +27,16 @@
 		<a href="/">Accueil</a>
 		<div>
 			{#if data.isLoggedIn}
-				<a href="/communaute">Communauté</a>
+				<a href="/community">Communauté</a>
 				<a href="/stats">Statistiques</a>
-				<!-- 
-				<a href="/controles">Contrôles</a>
 				<a href="/ambiance">Ambiance</a>
+				{#if $obsConnectionStatus == 'CONNECTED'}
+					<a href="/controls">Contrôles</a>
+				{/if}
+				<a href="/settings">Réglages</a>
+				<!-- 
 				<a href="/annonces">Annonces</a>
-				<a href="/reglages">Réglages</a> -->
+				-->
 			{:else}
 				<a href="/login">Connexion</a>
 			{/if}
@@ -87,7 +93,7 @@
 	}
 
 	main {
-		padding: 0 2rem;
+		padding: 0 2rem 4em;
 	}
 
 	nav a::after {

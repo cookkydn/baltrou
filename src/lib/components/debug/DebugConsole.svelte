@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-
+  let consoleElement: HTMLElement;
   interface ConsoleLog {
     id: number;
     type: 'log' | 'warn' | 'error' | 'info';
@@ -32,6 +32,7 @@
     // Remplacer console.log
     console.log = (...args: any[]) => {
       oldConsole.log.apply(console, args); // Appelle l'original
+      consoleElement.scrollTop = -consoleElement.scrollHeight;
       logs = [
         ...logs,
         { id: logId++, type: 'log', timestamp: new Date(), message: formatMessage(args) }
@@ -41,6 +42,7 @@
     // Remplacer console.warn
     console.warn = (...args: any[]) => {
       oldConsole.warn.apply(console, args);
+      consoleElement.scrollTop = -consoleElement.scrollHeight;
       logs = [
         ...logs,
         { id: logId++, type: 'warn', timestamp: new Date(), message: formatMessage(args) }
@@ -50,6 +52,7 @@
     // Remplacer console.error
     console.error = (...args: any[]) => {
       oldConsole.error.apply(console, args);
+      consoleElement.scrollTop = -consoleElement.scrollHeight;
       logs = [
         ...logs,
         { id: logId++, type: 'error', timestamp: new Date(), message: formatMessage(args) }
@@ -59,6 +62,7 @@
     // Remplacer console.info
     console.info = (...args: any[]) => {
       oldConsole.info.apply(console, args);
+      consoleElement.scrollTop = -consoleElement.scrollHeight;
       logs = [
         ...logs,
         { id: logId++, type: 'info', timestamp: new Date(), message: formatMessage(args) }
@@ -75,7 +79,7 @@
   });
 </script>
 
-<div class="console-log-window">
+<div class="console-log-window" bind:this={consoleElement} >
   {#if logs.length === 0}
     <p class="placeholder">En attente des logs de la console...</p>
   {/if}
@@ -100,6 +104,9 @@
     padding: 0.5rem;
     display: flex;
     flex-direction: column-reverse; /* Affiche les logs du bas vers le haut */
+    max-height: 100%;
+    overflow: auto;
+    scroll-behavior: smooth;
   }
   .placeholder {
     font-family: 'Inter', sans-serif;

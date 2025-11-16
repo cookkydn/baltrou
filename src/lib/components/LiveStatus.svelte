@@ -1,20 +1,21 @@
 <script>
-	import { stats } from "$lib/stores/stats-store";
-
+	import { stats } from '$lib/stores/stats-store';
+	import { obsConnectionStatus } from '$lib/stores/obs-store';
 </script>
 
 {#if $stats.isLive}
 	<div class="live-status-container live">
-		<span>En direct</span>
+		<span>OBS: {$obsConnectionStatus}</span>
+		<span>Twitch: En direct</span>
 		<div class="live-dot"></div>
 	</div>
 {:else}
-<div class="live-status-container offline">
-	<span>Hors ligne</span>
-	<div class="offline-dot"></div>
-</div>
+	<div class="live-status-container offline">
+		<span>OBS: {$obsConnectionStatus}</span>
+		<span>Twitch: Hors ligne</span>
+		<div class="offline-dot"></div>
+	</div>
 {/if}
-
 
 <style>
 	.live-status-container {

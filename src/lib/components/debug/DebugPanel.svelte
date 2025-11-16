@@ -2,9 +2,10 @@
 	import DebugSSE from './DebugSSE.svelte';
 	import DebugConsole from './DebugConsole.svelte';
 	import DebugStore from './DebugStore.svelte';
+	import DebugControls from './DebugControls.svelte';
 
 	let isOpen = false;
-	let activeTab: 'sse' | 'console' | 'store' = 'sse';
+	let activeTab: 'sse' | 'console' | 'store' | 'controls' = 'sse';
 </script>
 
 <!-- 
@@ -50,6 +51,9 @@
 		<button class:active={activeTab === 'store'} on:click={() => (activeTab = 'store')}>
 			Store
 		</button>
+    		<button class:active={activeTab === 'controls'} on:click={() => (activeTab = 'controls')}>
+			Controls
+		</button>
 	</nav>
 
 	<!-- Le contenu des onglets -->
@@ -64,6 +68,10 @@
 
 		<div class="tab-pane" class:visible={activeTab === 'store'}>
 			<DebugStore />
+		</div>
+
+    		<div class="tab-pane" class:visible={activeTab === 'controls'}>
+			<DebugControls />
 		</div>
 	</div>
 </div>
