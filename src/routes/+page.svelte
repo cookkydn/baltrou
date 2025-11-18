@@ -1,22 +1,14 @@
-<script lang="ts">
-	import { auth } from '$lib/stores/auth-store';
-</script>
 <svelte:head>
   <title>Baltrou</title>
 </svelte:head>
-<div class="content-box">
+<div class="card welcome">
 	<h1>Welcome to B.A.L.T.R.O.U.</h1>
 	<p>Broadcast Asset Live Tool for Real-time Overlay Utility</p>
 	<p>C'est marrant et ça c'est drôle</p>
 </div>
 
-<div class="content-box debug">
-	<h2>Debug infos</h2>
-	<p>loggedIn: {$auth}</p>
-</div>
-
 <style>
-	.debug {
-		font-family: monospace;
+	.welcome {
+		text-align: center;
 	}
 </style>

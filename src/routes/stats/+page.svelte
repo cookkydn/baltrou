@@ -10,32 +10,32 @@
 <h1>Statistiques du Stream</h1>
 
 <div class="stats-grid">
-	<div class="stat-card">
+	<div class="card">
 		<h2>Status du Stream</h2>
 		<LiveStatus />
 	</div>
 
-	<div class="stat-card">
+	<div class="card">
 		<h2>Viewers</h2>
 		<p>{$stats.viewerCount}</p>
 	</div>
 
-	<div class="stat-card">
+	<div class="card">
 		<h2>Commentaires</h2>
 		<p>{$chat.messages.length}</p>
 	</div>
 
-	<div class="stat-card">
+	<div class="card">
 		<h2>Followers</h2>
 		<p>{$stats.followerCount}</p>
 	</div>
 
-	<div class="stat-card">
+	<div class="card">
 		<h2>Abonnés</h2>
 		<p>{$stats.subscriberCount}</p>
 	</div>
 
-	<div class="stat-card full-width">
+	<div class="card full-width">
 		<h2>Viewers au cours du temps</h2>
 		<!-- Le graphique sera inséré ici -->
 		<ViewerGraph></ViewerGraph>
@@ -43,28 +43,25 @@
 </div>
 
 <style>
+	.card {
+		margin: 0;
+		padding: 1rem;
+	}
 	.stats-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 		gap: 1rem;
 	}
 
-	.stat-card {
-		background-color: rgba(255, 255, 255, 0.1);
-		border-radius: 8px;
-		padding: 1rem;
-		text-align: center;
-		color: white;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-	.stat-card p {
+	.card p {
 		margin: 0;
 	}
 
 	.full-width {
 		grid-column: 1 / -1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 	}
 </style>

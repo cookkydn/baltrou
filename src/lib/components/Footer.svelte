@@ -40,6 +40,7 @@
 <style>
 	footer {
 		background-color: var(--menu-bg);
+		font-family: var(--font-heading);
 		padding: 0.5rem 1rem;
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
@@ -70,6 +71,7 @@
 		justify-content: center;
 		align-items: center;
 	}
+
 	.stat-item span {
 		margin: 0 5px;
 	}

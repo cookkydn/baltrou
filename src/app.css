@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+:root {
+	/* --- PALETTE DE COULEURS --- */
+
+	/* Couleurs principales (Background) */
+	--bg-gradient-start: #02177a;
+	--bg-gradient-end: #62007a;
+	--menu-bg: #290033;
+
+	/* Couleurs de surface (Glassmorphism) */
+	--surface-color: rgba(255, 255, 255, 0.1);
+	--surface-hover: rgba(255, 255, 255, 0.2);
+	--surface-border: rgba(255, 255, 255, 0.1); /* Bordure subtile */
+
+	/* Couleurs de texte */
+	--text-primary: #ffffff;
+	--text-secondary: rgba(255, 255, 255, 0.7);
+	--text-muted: #9ca3af;
+
+	/* Couleurs d'accentuation (Actions) */
+	--accent-primary: #9146ff; /* Twitch Purple */
+	--accent-primary-hover: #7a3de0;
+	--accent-success: #22c55e; /* Vert */
+	--accent-warning: #eab308; /* Jaune */
+	--accent-danger: #ef4444; /* Rouge */
+	--accent-info: #3b82f6; /* Bleu */
+
+	/* --- TYPOGRAPHIE --- */
+	--font-heading: 'Bebas Neue', cursive;
+	--font-body: 'Inter', sans-serif;
+
+	/* --- FORMES & ESPACEMENT --- */
+	--radius-sm: 4px;
+	--radius-md: 8px;
+	--radius-lg: 16px;
+	--radius-full: 9999px;
+
+	--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* --- ROOT STYLES --- */
+html {
+	background-color: var(--menu-bg);
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background: linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-end));
+	color: var(--text-primary);
+	font-family: var(--font-body), sans-serif;
+	min-height: 100vh;
+}
+
+/* --- CLASSES UTILITAIRES RÉUTILISABLES --- */
+
+/* --- CONTAINERS --- */
+.card {
+	background-color: var(--surface-color);
+	border: 1px solid var(--surface-border);
+	border-radius: var(--radius-md);
+	padding: 2rem;
+	margin: 1rem;
+	backdrop-filter: blur(10px); /* Effet verre dépoli */
+	box-shadow: var(--shadow-md);
+	color: var(--text-primary);
+}
+
+/* --- BUTTONS --- */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.5rem 1rem;
+	border-radius: var(--radius-sm);
+	font-family: var(--font-body);
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	border: none;
+	text-decoration: none;
+	color: var(--text-primary);
+	background-color: var(--surface-color);
+}
+.btn:hover {
+	filter: brightness(0.9);
+}
+.btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* --- BUTTONS VARIANTS --- */
+.btn-primary {
+	background-color: var(--accent-info);
+}
+
+.btn-danger {
+	background-color: var(--accent-danger);
+}
+
+.btn-success {
+	background-color: var(--accent-success);
+}
+
+/* --- TITLES --- */
+h1,
+h2,
+h3 {
+	font-family: var(--font-heading);
+	letter-spacing: 0.05em;
+	margin-top: 0;
+}
+
+/* --- STATUS --- */
+.status-box {
+	margin-bottom: 1.5rem;
+	font-size: 1rem;
+	padding: 0.75rem;
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: var(--radius-sm);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: 1px solid var(--surface-border);
+}
+.status-text {
+	font-weight: 700;
+}
+.status-connecting {
+	color: var(--accent-warning);
+}
+.status-connected {
+	color: var(--accent-success);
+}
+.status-error {
+	color: var(--accent-danger);
+}
+.status-disconnected {
+	color: var(--text-muted);
+}
+
+/* --- FORMS ---  */
+.form-group {
+	margin-bottom: 1rem;
+}
+
+.form-group label {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: 500;
+	font-size: 0.9rem;
+	color: var(--text-secondary);
+}
+
+.form-group input {
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.2);
+	border: 1px solid var(--surface-border);
+	color: var(--text-primary);
+	padding: 0.75rem;
+	border-radius: var(--radius-sm);
+	box-sizing: border-box;
+	font-family: var(--font-body);
+	transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+	outline: none;
+	border-color: var(--accent-primary);
+}
+
+.button-group {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 2rem;
+}

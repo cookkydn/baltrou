@@ -8,7 +8,7 @@
 </script>
 
 {#if $chat.pinnedMessage != null}
-	<div class="pinned-message">
+	<div class="card pinned-message">
 		<button class="close-button" onclick={unpinMessage}>
 			<CloseIcon />
 		</button>
@@ -23,9 +23,8 @@
 <style>
 	.pinned-message {
 		position: relative;
-		background-color: rgba(255, 255, 255, 0.1);
-		border-radius: 8px;
 		padding: 1rem;
+		margin: 0;
 	}
 	.close-button {
 		position: absolute;
@@ -49,7 +48,4 @@
 		font-family: 'Inter', sans-serif;
 	}
 
-	.pinned-message .message strong {
-		margin-right: 0.5rem;
-	}
 </style>
