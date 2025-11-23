@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { toasts } from '$lib/stores/toast-store';
-	import { flip } from 'svelte/animate';
 	import { fade, fly } from 'svelte/transition';
 	import CloseIcon from './icons/CloseIcon.svelte';
 

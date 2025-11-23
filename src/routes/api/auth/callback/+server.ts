@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { addUser, getTwitchUserInfo, getUser, updateCredentials } from '$lib/server/user';
 import { TwitchApiError } from '$lib/types/twitch.js';
 import { redirect } from '@sveltejs/kit';
@@ -23,8 +23,8 @@ export async function GET({ url, cookies, fetch }) {
 			'Content-Type': 'application/x-www-form-urlencoded'
 		},
 		body: new URLSearchParams({
-			client_id: TWITCH_CLIENT_ID,
-			client_secret: TWITCH_CLIENT_SECRET,
+			client_id: env.TWITCH_CLIENT_ID,
+			client_secret: env.TWITCH_CLIENT_SECRET,
 			code: code,
 			grant_type: 'authorization_code',
 			redirect_uri: REDIRECT_URI

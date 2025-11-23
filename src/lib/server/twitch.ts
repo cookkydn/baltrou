@@ -1,4 +1,4 @@
-import { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { error } from '@sveltejs/kit';
 import { updateCredentials, type Credentials } from './user';
 
@@ -61,7 +61,6 @@ export class TwitchApiWrapper {
     const data = await response.json();
     
     // Calcule le total des bits
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const totalBits = data.data.reduce((sum: number, entry: any) => sum + entry.score, 0);
     return totalBits as number;
   }
@@ -127,7 +126,7 @@ export class TwitchApiWrapper {
     
     // Injecte le token et le Client-ID
     (options.headers as Record<string, string>)['Authorization'] = `Bearer ${this.credentials.access_token}`;
-    (options.headers as Record<string, string>)['Client-Id'] = TWITCH_CLIENT_ID;
+    (options.headers as Record<string, string>)['Client-Id'] = env.TWITCH_CLIENT_ID;
 
     return fetch(url, options);
   }
@@ -144,8 +143,8 @@ export class TwitchApiWrapper {
       body: new URLSearchParams({
         grant_type: 'refresh_token',
         refresh_token: this.credentials.refresh_token,
-        client_id: TWITCH_CLIENT_ID,
-        client_secret: TWITCH_CLIENT_SECRET
+        client_id: env.TWITCH_CLIENT_ID,
+        client_secret: env.TWITCH_CLIENT_SECRET
       })
     });
 
