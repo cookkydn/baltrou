@@ -19,5 +19,5 @@ for the twitch variables you can find them in the developper portal.
 
 4. Start the app
 ```bash
-npm run start
+pnpm run start
 ```
