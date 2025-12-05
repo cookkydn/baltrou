@@ -1,0 +1,49 @@
+/* --- BODY STYLES --- */
+html {
+	background-color: var(--menu-bg);
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background: linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-end));
+	color: var(--text-primary);
+	font-family: var(--font-body), sans-serif;
+	min-height: 100vh;
+}
+
+/* --- FORMS ---  */
+.form-group {
+	margin-bottom: 1rem;
+}
+
+.form-group label {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: 500;
+	font-size: 0.9rem;
+	color: var(--text-secondary);
+}
+
+.form-group input {
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.2);
+	border: 1px solid var(--surface-border);
+	color: var(--text-primary);
+	padding: 0.75rem;
+	border-radius: var(--radius-sm);
+	box-sizing: border-box;
+	font-family: var(--font-body);
+	transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+	outline: none;
+	border-color: var(--accent-primary);
+}
+
+.button-group {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 2rem;
+}
