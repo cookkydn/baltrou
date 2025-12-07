@@ -1,7 +1,7 @@
-import { getAllUsers, type User } from '$lib/server/user';
+import { addViewerRecord, getAllUsers } from '$lib/server/user';
 import { TwitchApiWrapper } from '$lib/server/twitch';
 import eventBus from '$lib/server/event-bus';
-import { addViewerRecord } from './db';
+import type { User } from '$lib/types/user';
 
 /**
  * Exécute la tâche de mise à jour des statistiques Twitch
@@ -28,14 +28,14 @@ export async function runTwitchUpdateCron() {
  */
 export async function processUser(user: User) {
 	// Remplacez 'any' par votre type 'User'
-	const { id, credentials, user_login } = user;
+	const { id, credentials, userLogin } = user;
 
-	if (!id || !credentials.refresh_token || !user_login) {
+	if (!id || !credentials.refreshToken || !userLogin) {
 		console.warn(`[CRON] Utilisateur ${id} incomplet. Sauté.`);
 		return;
 	}
 
-	console.log(`[CRON] Traitement de l'utilisateur: ${user_login}`);
+	console.log(`[CRON] Traitement de l'utilisateur: ${userLogin}`);
 
 	try {
 		const api = new TwitchApiWrapper(credentials, id);
@@ -60,7 +60,7 @@ export async function processUser(user: User) {
 			}
 		};
 
-		addViewerRecord({
+		addViewerRecord(user.id,{
 			count: streamInfo?.viewer_count || 0,
 			timestamp: Date.now()
 		});
@@ -70,7 +70,7 @@ export async function processUser(user: User) {
 		eventBus.emit(eventBusChannel, payload);
 	} catch (err: any) {
 		// Si le refresh token est invalide ou l'utilisateur a révoqué l'accès
-		console.error(`[CRON] Échec du traitement de ${user_login}: ${err.message}`);
+		console.error(`[CRON] Échec du traitement de ${userLogin}: ${err.message}`);
 		// Le 'try...catch' ici est crucial pour que l'échec d'un
 		// utilisateur ne bloque pas les autres.
 	}

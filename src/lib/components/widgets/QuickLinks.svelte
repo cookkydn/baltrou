@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { appMode } from '$lib/stores/global-store';
-	import { quickLinks, type QuickLink } from '$lib/stores/quick-links-store';
+	import { appMode } from '$lib/stores/user-store';
+	import { quickLinks } from '$lib/stores/quick-links-store';
 	import { fade } from 'svelte/transition';
 	import PlusIcon from '../icons/PlusIcon.svelte';
 	import ColorPicker from '../ColorPicker.svelte';
+	import type { QuickLink } from '$lib/types/user';
 
 	// --- État de la Modale ---
 	let dialog: HTMLDialogElement;

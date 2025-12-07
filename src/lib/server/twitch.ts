@@ -1,6 +1,7 @@
 import { env } from '$env/dynamic/private';
 import { error } from '@sveltejs/kit';
-import { updateCredentials, type Credentials } from './user';
+import { updateCredentials } from './user';
+import type { Credentials } from '$lib/types/user';
 
 /**
  * Un wrapper pour l'API Twitch Helix qui gère
@@ -125,7 +126,7 @@ export class TwitchApiWrapper {
 
 		// Injecte le token et le Client-ID
 		(options.headers as Record<string, string>)['Authorization'] =
-			`Bearer ${this.credentials.access_token}`;
+			`Bearer ${this.credentials.accessToken}`;
 		(options.headers as Record<string, string>)['Client-Id'] = env.TWITCH_CLIENT_ID;
 
 		return fetch(url, options);
@@ -142,7 +143,7 @@ export class TwitchApiWrapper {
 			},
 			body: new URLSearchParams({
 				grant_type: 'refresh_token',
-				refresh_token: this.credentials.refresh_token,
+				refresh_token: this.credentials.refreshToken,
 				client_id: env.TWITCH_CLIENT_ID,
 				client_secret: env.TWITCH_CLIENT_SECRET
 			})
@@ -156,9 +157,9 @@ export class TwitchApiWrapper {
 
 		// Préparer les nouveaux credentials pour la DB
 		const newCredentials = {
-			access_token: data.access_token,
-			expires_in: new Date(Date.now() + data.expires_in * 1000),
-			refresh_token: data.refresh_token // Twitch peut renvoyer un nouveau refresh_token
+			accessToken: data.access_token,
+			expiresIn: new Date(Date.now() + data.expires_in * 1000),
+			refreshToken: data.refresh_token // Twitch peut renvoyer un nouveau refresh_token
 		};
 
 		// 1. Mettre à jour nos tokens en DB

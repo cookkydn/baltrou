@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { events, type SseEvent } from '$lib/stores/event-store.js';
+	import { events } from '$lib/stores/event-store.js';
+	import type { SseEvent } from '$lib/types/events';
 	import type { ConnexionState } from '$lib/types/status';
 	import { jsonReplacer } from '$lib/utils';
 	import { onMount } from 'svelte';
@@ -9,6 +10,7 @@
 
 	onMount(() => {
 		return events.subscribe((event) => {
+			if(event == null) return;
 			if (status === 'connecting' && event.type != 'empty') {
 				status = 'connected';
 			}

@@ -4,19 +4,19 @@ import { ircManager } from '$lib/server/irc';
 import { initSoundboardFolder } from '$lib/server/soundboard';
 import cron from 'node-cron';
 
-console.log('[HOOKS] Configuration des services...');
+console.log('[HOOKS] Starting services');
 initSoundboardFolder();
-console.log('[HOOKS] Soundboard configuré');
+console.log('[HOOKS] Soundboard started');
 
-console.log('[HOOKS] Démarrage des services de fond...');
+console.log('[HOOKS] Starting background tasks');
 
 ircManager.connect();
-console.log('[HOOKS] Bot TMI démarré et en attente...');
+console.log('[HOOKS] TMI client connected');
 
 cron.schedule('*/1 * * * *', runTwitchUpdateCron);
-console.log('[HOOKS] Tâche CRON planifiée (toutes les minutes)');
+console.log('[HOOKS] CRON Tasks planified');
 
-console.log('[HOOKS] Services de fond démarrés');
+console.log('[HOOKS] All background services up');
 
 export async function handle({ event, resolve }) {
 	return await resolve(event);

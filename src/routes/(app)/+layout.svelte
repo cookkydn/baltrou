@@ -3,21 +3,38 @@
 	import DebugPanel from '$lib/components/debug/DebugPanel.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import ToastContainer from '$lib/components/ToastContainer.svelte';
-	import { auth } from '$lib/stores/global-store.js';
+	import { appMode, auth, timer } from '$lib/stores/user-store.js';
 	import { chat } from '$lib/stores/chat-store.js';
 	import { stats } from '$lib/stores/stats-store.js';
 	import { onMount } from 'svelte';
 	import './app.css';
 	import { obs } from '$lib/stores/obs';
 	import { ConnectionStatus } from '$lib/types/status';
+	import { quickLinks } from '$lib/stores/quick-links-store';
+	import { getUserInfo } from '$lib/services/auth.service';
+	import { events } from '$lib/stores/event-store';
 
-	let { data, children } = $props();
+	let { children } = $props();
 	const status = obs.client.status;
 	onMount(async () => {
-		$auth = data.isLoggedIn;
 		$chat;
 		$stats;
+		$events;
+		$auth = false;
 		obs.init();
+		const user = await getUserInfo();
+		if(user) {
+			quickLinks.set(user.quickLinks);
+			appMode.set(user.isInConfigMode ? 'CONFIG' : 'STREAM');
+			if (user.timerTargetDate) {
+				timer.set(new Date(user.timerTargetDate));
+			} else {
+				timer.remove();
+			}
+			auth.set(true);
+		} else {
+			auth.set(false);
+		}
 	});
 </script>
 
@@ -29,7 +46,7 @@
 	<nav>
 		<a href="/">Accueil</a>
 		<div>
-			{#if data.isLoggedIn}
+			{#if $auth}
 				<a href="/community">Communauté</a>
 				<a href="/stats">Statistiques</a>
 				<a href="/ambiance">Ambiance</a>
@@ -38,9 +55,6 @@
 				{/if}
 				<a href="/soundboard">Soundboard</a>
 				<a href="/settings">Réglages</a>
-				<!-- 
-				<a href="/annonces">Annonces</a>
-				-->
 			{:else}
 				<a href="/login">Connexion</a>
 			{/if}
@@ -53,7 +67,7 @@
 	{@render children?.()}
 </main>
 
-<Footer isLoggedIn={data.isLoggedIn}></Footer>
+<Footer isLoggedIn={$auth}></Footer>
 
 <style>
 	header {

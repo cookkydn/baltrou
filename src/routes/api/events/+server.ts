@@ -1,30 +1,18 @@
+import { getUserFromCookies } from '$lib/server/auth.js';
 import { processUser } from '$lib/server/cron.js';
 import eventBus from '$lib/server/event-bus';
 import { ircManager } from '$lib/server/irc.js';
-import { getUser } from '$lib/server/user.js';
 import { error, json } from '@sveltejs/kit';
 
-/**
- * Ce handler GET gère la connexion Server-Sent Events (SSE).
- * Il maintient une connexion ouverte avec le client.
- */
 export async function GET({ cookies }) {
-	console.log('[SSE] User is attempting connexion...');
-	const userId = cookies.get('user_id');
-
-	// Si aucun cookie, l'utilisateur n'est pas autorisé.
-	if (!userId) {
-		console.log('[SSE] User is not connected, aborting...');
+	console.log('[SSE] New user connecting to SSE');
+	const user = await getUserFromCookies(cookies);
+	if (!user) {
+		console.log('[SSE] User is not connected, aborting');
 		throw error(401, 'Non autorisé');
 	}
 
-	const user = await getUser(userId);
-	if (!user) {
-		console.log('[SSE] User not found, aborting...');
-		throw error(404, 'User id not found');
-	}
-
-	const channel = `event:${userId}`;
+	const channel = `event:${user.id}`;
 	let handler: (message: unknown) => void;
 
 	const stream = new ReadableStream({
@@ -36,24 +24,24 @@ export async function GET({ cookies }) {
 
 			eventBus.on(channel, handler);
 
-			await ircManager.joinChannel(userId, user.user_login);
+			await ircManager.joinChannel(user.id, user.userLogin);
 			await processUser(user);
 
-			console.log(`[SSE] Client ${userId} connected`);
-			controller.enqueue(`event: connected\ndata: {"message": "Connexion SSE établie"}\n\n`);
+			console.log(`[SSE] User ${user.id} connected`);
+			controller.enqueue(`event: connected\ndata: {"message": "SSE Ready"}\n\n`);
 		},
 		async cancel() {
-			console.log(`[SSE] Client ${userId} disconnected`);
+			console.log(`[SSE] User ${user.id} disconnected`);
 			eventBus.off(channel, handler);
-			await ircManager.partChannel(userId, user.user_login);
+			await ircManager.partChannel(user.id, user.userLogin);
 		}
 	});
 
 	return new Response(stream, {
 		headers: {
 			'Content-Type': 'text/event-stream',
-			'Cache-Control': 'no-cache', // Empêche le proxy de mettre en cache
-			Connection: 'keep-alive' // Maintient la connexion
+			'Cache-Control': 'no-cache',
+			Connection: 'keep-alive'
 		}
 	});
 }

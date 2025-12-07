@@ -1,5 +1,5 @@
 import { env } from '$env/dynamic/private';
-import { addUser, getTwitchUserInfo, getUser, updateCredentials } from '$lib/server/user';
+import { addUser, DEFAULT_USER, getTwitchUserInfo, getUser, updateCredentials } from '$lib/server/user';
 import { TwitchApiError } from '$lib/types/twitch.js';
 import { redirect } from '@sveltejs/kit';
 
@@ -44,19 +44,20 @@ export async function GET({ url, cookies, fetch }) {
 	}
 	if ((await getUser(user.id)) != null) {
 		updateCredentials(user.id, {
-			access_token: tokenData.access_token,
-			expires_in: new Date(Date.now() + tokenData.expires_in * 1000),
-			refresh_token: tokenData.refresh_token
+			accessToken: tokenData.access_token,
+			expiresIn: new Date(Date.now() + tokenData.expires_in * 1000),
+			refreshToken: tokenData.refresh_token
 		});
 	} else {
 		await addUser({
 			id: user.id,
-			user_login: user.login,
+			userLogin: user.login,
 			credentials: {
-				access_token: tokenData.access_token,
-				expires_in: new Date(Date.now() + tokenData.expires_in * 1000),
-				refresh_token: tokenData.refresh_token
-			}
+				accessToken: tokenData.access_token,
+				expiresIn: new Date(Date.now() + tokenData.expires_in * 1000),
+				refreshToken: tokenData.refresh_token
+			},
+			...DEFAULT_USER
 		});
 	}
 	console.log(`[AUTH] user ${user.id} - ${user.display_name} connected`);

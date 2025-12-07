@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { appMode, timer } from '$lib/stores/global-store';
+	import { appMode, timer } from '$lib/stores/user-store';
 
 	let now = $state(new Date());
 	let inputHours = $state('');

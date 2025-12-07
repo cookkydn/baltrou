@@ -18,7 +18,7 @@ export async function GET({ cookies }: RequestEvent) {
 		await db.read();
 
 		// 3. Récupérer le tableau de l'historique
-		const viewerHistory = db.data.viewer_history;
+		const viewerHistory = db.data.users.find(u=>u.id == userId)?.viewerHistory;
 
 		// 4. Renvoyer les données au format JSON
 		return json(viewerHistory);

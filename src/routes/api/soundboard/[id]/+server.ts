@@ -1,4 +1,4 @@
-import { deleteUserSound, getSound, renameSound } from '$lib/server/soundboard.js';
+import { deleteSound, getSound, renameSound } from '$lib/server/soundboard.js';
 import { error, json } from '@sveltejs/kit';
 import { createReadStream } from 'fs';
 import { stat } from 'fs/promises';
@@ -10,7 +10,7 @@ export async function DELETE({ params, cookies }) {
 		throw error(401, 'Non autorisé');
 	}
 
-	await deleteUserSound(userId, params.id);
+	await deleteSound(userId, params.id);
 	return json({});
 }
 

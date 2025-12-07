@@ -46,12 +46,12 @@ export async function processAndSaveSound(file: File, userId: string) {
 	const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '');
 	const cleanName = nameWithoutExt.replace(/[^a-zA-Z0-9 ]/g, '');
 
-	await addSoundToUser(fileHash, cleanName, userId, extension);
+	await addSound(fileHash, cleanName, userId, extension);
 
 	return { id: fileHash, name: cleanName };
 }
 
-async function addSoundToUser(
+async function addSound(
 	fileHash: string,
 	originalName: string,
 	userId: string,
@@ -77,7 +77,7 @@ async function addSoundToUser(
 	await db.write();
 }
 
-export async function deleteUserSound(userId: string, soundId: string) {
+export async function deleteSound(userId: string, soundId: string) {
 	await db.read();
 
 	const existingFile = db.data.sounds.find((s) => s.id === soundId && userId in s.userAliases);

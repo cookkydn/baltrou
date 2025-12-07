@@ -1,6 +1,6 @@
 <div class="card center">
 	<h1>Connexion</h1>
-	<a href="/api/auth/login" class="btn">Connexion à Twitch</a>
+	<a href="/api/auth/redirect" class="btn">Connexion à Twitch</a>
 </div>
 
 <style>

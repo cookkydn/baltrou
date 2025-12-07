@@ -1,95 +1,46 @@
-import { writable } from 'svelte/store';
+import { readable } from 'svelte/store';
+import { browser } from '$app/environment';
+import type { SseEvent } from '$lib/types/events';
 
-/**
- * Interface de base pour tous les événements transitant par notre SSE.
- * Le `type` est utilisé pour le filtrage (ex: 'irc_message', 'connected', 'cron_update').
- */
-export type SseEvent = {
-	type: string;
-	timestamp: Date;
-	data: any;
-};
+export const events = readable<SseEvent | null>(null, (set) => {
+  if (!browser) return;
 
-/**
- * Un Svelte Store 'readable' qui gère la connexion SSE globale
- * pour l'application.
- */
-export const events = writable<SseEvent>(
-	{ type: 'empty', data: null, timestamp: new Date() },
-	(set) => {
-		let eventSource: EventSource | null = null;
+  const eventSource = new EventSource('/api/events');
 
-		/**
-		 * Initialise la connexion EventSource.
-		 */
-		function connect() {
-			// Ne pas s'exécuter côté serveur (SSR)
-			if (typeof window === 'undefined') {
-				return;
-			}
+  const updateStore = (type: string, rawData: any) => {
+    set({
+      type,
+      data: rawData,
+      timestamp: new Date()
+    });
+  };
 
-			// Crée la connexion unique vers notre endpoint
-			eventSource = new EventSource('/api/events');
+  eventSource.onmessage = (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      updateStore('message', data); 
+    } catch {
+      console.error('SSE: Failed to parse message', event.data);
+    }
+  };
 
-			/**
-			 * Écouteur pour les messages "génériques"
-			 * (tous ceux qui n'ont pas de 'event: name' spécifique)
-			 * C'est ici que 'irc_message', 'cron_update', etc. arriveront.
-			 */
-			eventSource.onmessage = (event: MessageEvent) => {
-				try {
-					const data = JSON.parse(event.data);
-					// Le 'data' est notre objet SseEvent complet
-					// (ex: { type: 'irc_message', data: {...} })
-					set(data);
-				} catch {
-					console.error("SSE: Échec de l'analyse du message générique", event.data);
-				}
-			};
+  eventSource.addEventListener('connected', (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      updateStore('connected', data);
+    } catch {
+      console.error('SSE: Failed to parse connected event', event.data);
+    }
+  });
 
-			/**
-			 * Écouteur pour l'événement 'connected'
-			 * (que nous envoyons depuis api/events/+server.ts)
-			 */
-			eventSource.addEventListener('connected', (event: MessageEvent) => {
-				try {
-					const data = JSON.parse(event.data);
-					// Nous le reformatons en notre type SseEvent standard
-					set({
-						type: 'connected',
-						data: data,
-						timestamp: new Date()
-					});
-				} catch {
-					console.error('SSE: Échec de l\'analyse de l\'événement "connected"', event.data);
-				}
-			});
+  eventSource.onerror = () => {
+    console.error('SSE: Connection lost');
+    updateStore('error', { message: 'Connection lost' });
+    eventSource.close(); 
+  };
 
-			/**
-			 * Gère les erreurs de connexion SSE
-			 */
-			eventSource.onerror = () => {
-				console.error('SSE: Erreur de connexion');
-				// On peut émettre un événement d'erreur si on veut
-				set({
-					type: 'error',
-					data: { message: 'Erreur de connexion SSE' },
-					timestamp: new Date()
-				});
-				// Le navigateur tentera de se reconnecter automatiquement
-			};
-		}
-
-		// Démarrer la connexion dès que le premier abonné arrive
-		connect();
-
-		// Fonction de "nettoyage"
-		// S'exécute lorsque le dernier abonné se désinscrit
-		return () => {
-			if (eventSource) {
-				eventSource.close();
-				console.log("SSE: Connexion fermée (plus d'abonnés)");
-			}
-		};
-	}
-);
+  return () => {
+    console.log('SSE: No more subscribers, closing connection.');
+    eventSource.close();
+  };
+});

@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
-import { events, type SseEvent } from './event-store';
+import { events } from './event-store';
+import type { SseEvent } from '$lib/types/events';
 
 export type TwitchStats = {
 	isLive: boolean;

@@ -11,7 +11,7 @@
 	import { jsonReplacer } from '$lib/utils';
 	import { statusNameMap } from '$lib/types/status';
 	import { soundboardStore } from '$lib/stores/soundboard-store';
-	import { appMode, auth } from '$lib/stores/global-store';
+	import { appMode, auth } from '$lib/stores/user-store';
 	const status = obs.client.status;
 	const sceneList = obs.sceneList;
 	const activeScene = obs.activeScene;

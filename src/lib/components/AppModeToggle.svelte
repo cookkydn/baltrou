@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { appMode } from '$lib/stores/global-store';
+	import { appMode } from '$lib/stores/user-store';
 
 	function setMode(mode: 'CONFIG' | 'STREAM') {
 		$appMode = mode;

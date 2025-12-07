@@ -25,7 +25,7 @@ vite.config.ts.timestamp-*
 
 # db
 db.json
-files
+data
 
 # vscode
 .vscode
