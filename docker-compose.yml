@@ -5,7 +5,7 @@ services:
     container_name: baltrou
     restart: unless-stopped
     ports:
-      - '4000:4000'
+      - '8069:4000'
 
     environment:
       - ORIGIN=https://example.com
@@ -16,9 +16,9 @@ services:
       - ./baltrou-data:/app/data
 
   watchtower:
-    image: containrrr/watchtower
+    image: beatkind/watchtower
     container_name: watchtower
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 60 --cleanup
+    command: --interval 3600 --cleanup
