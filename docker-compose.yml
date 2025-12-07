@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   baltrou:
     image: ghcr.io/potatosquad-corp/baltrou:latest
