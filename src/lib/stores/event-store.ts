@@ -7,10 +7,10 @@ export const events = readable<SseEvent | null>(null, (set) => {
 
   const eventSource = new EventSource('/api/events');
 
-  const updateStore = (type: string, rawData: any) => {
+  const updateStore = (rawData: {type:string} & any) => {
     set({
-      type,
-      data: rawData,
+      type: rawData.type,
+      data: rawData.data,
       timestamp: new Date()
     });
   };
@@ -18,7 +18,7 @@ export const events = readable<SseEvent | null>(null, (set) => {
   eventSource.onmessage = (event) => {
     try {
       const data = JSON.parse(event.data);
-      updateStore('message', data); 
+      updateStore(data); 
     } catch {
       console.error('SSE: Failed to parse message', event.data);
     }
@@ -27,7 +27,7 @@ export const events = readable<SseEvent | null>(null, (set) => {
   eventSource.addEventListener('connected', (event) => {
     try {
       const data = JSON.parse(event.data);
-      updateStore('connected', data);
+      updateStore({type: 'connected', data});
     } catch {
       console.error('SSE: Failed to parse connected event', event.data);
     }
@@ -35,7 +35,7 @@ export const events = readable<SseEvent | null>(null, (set) => {
 
   eventSource.onerror = () => {
     console.error('SSE: Connection lost');
-    updateStore('error', { message: 'Connection lost' });
+    updateStore({ message: 'Connection lost', type: 'error' });
     eventSource.close(); 
   };
 

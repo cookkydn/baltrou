@@ -18,7 +18,7 @@ export async function GET({ params }) {
 	const sound = await getSound(params.id);
 	if (!sound) throw error(404, 'Sound not found');
 
-	const filePath = `./files/soundboard/${sound.id}.${sound.extension}`;
+	const filePath = `./data/soundboard/${sound.id}.${sound.extension}`;
 
 	try {
 		// Check file stats for Content-Length
