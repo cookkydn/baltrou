@@ -1,5 +1,4 @@
 <script lang="ts">
-	import favicon from '$lib/assets/favicon.svg';
 	import DebugPanel from '$lib/components/debug/DebugPanel.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import ToastContainer from '$lib/components/ToastContainer.svelte';
@@ -23,7 +22,7 @@
 		$auth = false;
 		obs.init();
 		const user = await getUserInfo();
-		if(user) {
+		if (user) {
 			quickLinks.set(user.quickLinks);
 			appMode.set(user.isInConfigMode ? 'CONFIG' : 'STREAM');
 			if (user.timerTargetDate) {
@@ -37,39 +36,71 @@
 		}
 	});
 </script>
-
-<svelte:head>
-	<link rel="icon" href={favicon} />
-</svelte:head>
 <ToastContainer />
-<header>
-	<nav>
-		<a href="/">Accueil</a>
-		<div>
-			{#if $auth}
-				<a href="/community">Communauté</a>
-				<a href="/stats">Statistiques</a>
-				<a href="/ambiance">Ambiance</a>
-				{#if $status == ConnectionStatus.CONNECTED}
-					<a href="/controls">Contrôles</a>
+<div class="app">
+	<header>
+		<nav>
+			<a href="/">Accueil</a>
+			<div>
+				{#if $auth}
+					<a href="/community">Communauté</a>
+					<a href="/stats">Statistiques</a>
+					<a href="/ambiance">Ambiance</a>
+					{#if $status == ConnectionStatus.CONNECTED}
+						<a href="/controls">Contrôles</a>
+					{/if}
+					{#if $appMode == 'CONFIG'}
+						<a href="/soundboard">Soundboard</a>
+					{/if}
+					<a href="/activities">Activités</a>
+					<a href="/settings">Réglages</a>
+				{:else}
+					<a href="/login">Connexion</a>
 				{/if}
-				<a href="/soundboard">Soundboard</a>
-				<a href="/settings">Réglages</a>
-			{:else}
-				<a href="/login">Connexion</a>
-			{/if}
-		</div>
-	</nav>
-</header>
+			</div>
+		</nav>
+	</header>
 
-<DebugPanel></DebugPanel>
-<main>
-	{@render children?.()}
-</main>
+	<DebugPanel></DebugPanel>
+	<main>
+		{@render children?.()}
+	</main>
 
-<Footer isLoggedIn={$auth}></Footer>
+	<Footer isLoggedIn={$auth}></Footer>
+</div>
 
 <style>
+	.app {
+		display: flex;
+		flex-direction: column;
+		height: 100vh; 
+		width: 100vw;
+	}
+
+	header {
+		flex-shrink: 0;
+		background-color: var(--menu-bg);
+		padding: 1rem;
+		z-index: 20;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+	}
+
+	main {
+		flex-grow: 1; 
+		overflow-y: auto; 
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		width: 100%;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	:global(footer) {
+		flex-shrink: 0;
+		z-index: 20;
+	}
+
 	header {
 		background-color: var(--menu-bg);
 		padding: 1rem;
@@ -88,10 +119,6 @@
 		padding: 0 1rem;
 		position: relative;
 		font-size: 1.2rem;
-	}
-
-	main {
-		padding: 2em 2rem 4em;
 	}
 
 	nav a::after {

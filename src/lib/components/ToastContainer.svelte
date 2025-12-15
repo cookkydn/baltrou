@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { toasts } from '$lib/stores/toast-store';
 	import { fade, fly } from 'svelte/transition';
-	import CloseIcon from './icons/CloseIcon.svelte';
+	import {X} from '@lucide/svelte'
 
 	// Icônes SVG minimalistes
 	const icons = {
@@ -20,7 +20,7 @@
 			</div>
 			<span class="message">{toast.message}</span>
 			<button class="close-btn" onclick={() => toasts.remove(toast.id)}>
-				<CloseIcon />
+				<X />
 			</button>
 		</div>
 	{/each}

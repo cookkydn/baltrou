@@ -1,5 +1,5 @@
 <script lang="ts">
-	import FileDropzone from '$lib/components/FileDropzone.svelte';
+	import FileDropzone from '$lib/ui/FileDropzone.svelte';
 	import SoundboardItem from '$lib/components/SoundboardItem.svelte';
 	import { soundboardStore } from '$lib/stores/soundboard-store';
 	import { onMount } from 'svelte';
@@ -63,19 +63,21 @@
 	}
 </script>
 
-<h1>Ajouter un son</h1>
-<FileDropzone
-	accept={['.mp3', '.ogg', '.wav']}
-	label="Ajouter des fichiers audios"
-	multiple
-	{onfiles}
-></FileDropzone>
+<div class="page-content">
+	<h1>Ajouter un son</h1>
+	<FileDropzone
+		accept={['.mp3', '.ogg', '.wav']}
+		label="Ajouter des fichiers audios"
+		multiple
+		onFiles={onfiles}
+	></FileDropzone>
 
-<h1>Soundboard</h1>
-<div class="sound-grid">
-	{#each $soundboardStore as sound (sound.id)}
-		<SoundboardItem {sound} onplay={playSound} onrename={renameSound} ondelete={deleteSound} />
-	{/each}
+	<h1>Soundboard</h1>
+	<div class="sound-grid">
+		{#each $soundboardStore as sound (sound.id)}
+			<SoundboardItem {sound} onplay={playSound} onrename={renameSound} ondelete={deleteSound} />
+		{/each}
+	</div>
 </div>
 
 <style>

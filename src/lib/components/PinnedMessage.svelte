@@ -1,6 +1,6 @@
 <script>
 	import { chat } from '$lib/stores/chat-store';
-	import CloseIcon from './icons/CloseIcon.svelte';
+	import { X } from '@lucide/svelte';
 
 	function unpinMessage() {
 		$chat.pinnedMessage = null;
@@ -10,7 +10,7 @@
 {#if $chat.pinnedMessage != null}
 	<div class="card pinned-message">
 		<button class="close-button" onclick={unpinMessage}>
-			<CloseIcon />
+			<X />
 		</button>
 		<h2>Message Épinglé</h2>
 		<div class="message">

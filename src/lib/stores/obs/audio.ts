@@ -97,7 +97,7 @@ export function createAudioModule(client: ObsClient) {
 			for (const item of items) {
 				if (item.isGroup) {
 					const { sceneItems } = await client._client.call('GetGroupSceneItemList', {
-						sceneName: item.sourceUuid
+						sceneUuid: item.sourceUuid
 					});
 					processSceneItems(sceneItems);
 				} else {

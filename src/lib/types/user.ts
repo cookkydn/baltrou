@@ -6,6 +6,7 @@ export type User = {
 	timerTargetDate: Date | null;
   quickLinks: QuickLink[];
 	viewerHistory: ViewerRecord[];
+	quizList: string[];
 };
 
 export type Credentials = {

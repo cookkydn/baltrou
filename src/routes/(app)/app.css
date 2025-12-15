@@ -12,6 +12,14 @@ body {
 	min-height: 100vh;
 }
 
+.page-content {
+	padding: 2em 2rem 4em;
+	width: 100%;
+	box-sizing: border-box;
+	max-width: 1600px; 
+	margin: 0 auto;
+}
+
 /* --- FORMS ---  */
 .form-group {
 	margin-bottom: 1rem;

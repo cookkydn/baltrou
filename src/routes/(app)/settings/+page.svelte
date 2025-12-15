@@ -7,13 +7,14 @@
 <svelte:head>
 	<title>Paramètres - Baltrou</title>
 </svelte:head>
-
-<div class="card">
-	<h1>Réglages généraux</h1>
-	<AppModeToggle />
+<div class="page-content">
+	<div class="card">
+		<h1>Réglages généraux</h1>
+		<AppModeToggle />
+	</div>
+	<ObsSettings />
+	<FiakSettings />
 </div>
-<ObsSettings />
-<FiakSettings />
 
 <style>
 	.card {

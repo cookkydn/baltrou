@@ -7,7 +7,7 @@ export type Camera = {
 };
 
 export function createCamsModule(client: ObsClient) {
-	const { subscribe, set } = writable(null);
+	const { subscribe, set } = writable<Camera[]>([]);
 	async function hydrate() {
 		const { inputs } = await client._client.call('GetInputList');
 		const camsList: Camera[] = inputs
@@ -20,7 +20,8 @@ export function createCamsModule(client: ObsClient) {
 				name: i.inputName,
 				uuid: i.inputUuid
 			}));
-    console.log(camsList);
+		set(camsList)
+    // console.log(camsList);
 	}
 
 	return {

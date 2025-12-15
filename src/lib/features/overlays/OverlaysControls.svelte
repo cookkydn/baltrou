@@ -10,7 +10,7 @@
 		Timer,
 		type Icon
 	} from '@lucide/svelte';
-	import SegmentedToggle from '$lib/components/ui/SegmentedToggle.svelte';
+	import SegmentedToggle from '$lib/ui/SegmentedToggle.svelte';
 	import { lightApiUrl } from '$lib/stores/fiak-store';
 
 	let overlayStates = $state({

@@ -1,48 +1,49 @@
 <script lang="ts">
-	import SegmentedToggle from '$lib/components/ui/SegmentedToggle.svelte';
 	import { obs } from '$lib/stores/obs';
-	import AudioMixer from '$lib/components/features/audio/AudioMixer.svelte';
-	import OverlaysControls from '$lib/components/features/overlays/OverlaysControls.svelte';
+	import AudioMixer from '$lib/features/audio/AudioMixer.svelte';
+	import OverlaysControls from '$lib/features/overlays/OverlaysControls.svelte';
 	const isConnected = obs.client.isConnected;
 	const activeScene = obs.activeScene;
 	const sceneList = obs.sceneList;
 </script>
 
-<h1>Contrôles du Stream</h1>
-{#if $isConnected}
-	<div class="card">
-		<h2>Scènes</h2>
-		<div class="scenes-grid" id="scenes-grid">
-			{#if $sceneList.length == 0}
-				<div class="card center">
-					<h2>Aucune scène</h2>
-					<p>Ajoutez des scènes dans OBS et vous les retrouverez ici !</p>
-				</div>
-			{/if}
-			{#each $sceneList as scene}
-				<div
-					class="scene-card {$activeScene?.uuid == scene.uuid ? 'active' : ''}"
-					role="button"
-					tabindex="0"
-					onkeydown={() => {}}
-					onclick={() => activeScene.switchScene(scene.uuid)}
-				>
-					<img src={scene.previewImage} class="scene-image" alt={scene.name} />
-					<div class="active-dot"></div>
-					<div class="scene-label">{scene.name}</div>
-				</div>
-			{/each}
+<div class="page-content">
+	<h1>Contrôles du Stream</h1>
+	{#if $isConnected}
+		<div class="card">
+			<h2>Scènes</h2>
+			<div class="scenes-grid" id="scenes-grid">
+				{#if $sceneList.length == 0}
+					<div class="card center">
+						<h2>Aucune scène</h2>
+						<p>Ajoutez des scènes dans OBS et vous les retrouverez ici !</p>
+					</div>
+				{/if}
+				{#each $sceneList as scene}
+					<div
+						class="scene-card {$activeScene?.uuid == scene.uuid ? 'active' : ''}"
+						role="button"
+						tabindex="0"
+						onkeydown={() => {}}
+						onclick={() => activeScene.switchScene(scene.uuid)}
+					>
+						<img src={scene.previewImage} class="scene-image" alt={scene.name} />
+						<div class="active-dot"></div>
+						<div class="scene-label">{scene.name}</div>
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
-	<div class="divider">
-		<AudioMixer/>
-		<OverlaysControls/>
-	</div>
-{:else}
-	<div class="content-box">
-		<p>OBS non connecté. Rendez vous dans les <a href="/settings">réglages</a></p>
-	</div>
-{/if}
+		<div class="divider">
+			<AudioMixer />
+			<OverlaysControls />
+		</div>
+	{:else}
+		<div class="content-box">
+			<p>OBS non connecté. Rendez vous dans les <a href="/settings">réglages</a></p>
+		</div>
+	{/if}
+</div>
 
 <style>
 	.card {
@@ -81,7 +82,6 @@
 	.scenes-grid::-webkit-scrollbar-thumb:hover {
 		background: var(--accent-primary);
 	}
-
 
 	.scene-card {
 		position: relative;

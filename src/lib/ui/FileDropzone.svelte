@@ -5,7 +5,7 @@
 		multiple?: boolean;
 		label?: string;
 		// Voici le remplaçant de l'événement : un callback prop
-		onfiles?: (files: File[]) => void;
+		onFiles?: (files: File[]) => void;
 	}
 
 	// 2. Récupération des props via le rune $props()
@@ -13,7 +13,7 @@
 		accept = [],
 		multiple = false,
 		label = 'Déposez vos fichiers ici',
-		onfiles
+		onFiles: onfiles
 	}: Props = $props();
 
 	// 3. États locaux avec le rune $state()

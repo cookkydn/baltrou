@@ -3,14 +3,16 @@
 	import PinnedMessage from '$lib/components/PinnedMessage.svelte';
 </script>
 
-<h1>Communauté</h1>
+<div class="page-content">
+	<h1>Communauté</h1>
 
-<div class="community-grid">
-	<div class="chat-wrapper">
-		<Chat></Chat>
-	</div>
-	<div class="right-column">
-		<PinnedMessage></PinnedMessage>
+	<div class="community-grid">
+		<div class="chat-wrapper">
+			<Chat></Chat>
+		</div>
+		<div class="right-column">
+			<PinnedMessage></PinnedMessage>
+		</div>
 	</div>
 </div>
 

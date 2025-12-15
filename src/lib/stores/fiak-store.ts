@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { get, writable } from 'svelte/store';
+import { toasts } from './toast-store';
 
 // --- Types ---
 export type LightApiStatus = 'UNKNOWN' | 'CONNECTING' | 'CONNECTED' | 'ERROR';
@@ -61,6 +62,7 @@ export async function pingFiakAPI() {
 	const timeoutId = setTimeout(() => {
 		console.log('[Lights API] Ping timeout.');
 		controller.abort(); // Annule la requête fetch
+		toasts.add("FIAK Request timeout",'error')
 	}, 5000); // Timeout de 5 secondes (5000 ms)
 
 	try {
@@ -86,6 +88,7 @@ export async function pingFiakAPI() {
 	} catch (err: any) {
 		console.error(`[Lights API] Échec du ping: ${err.message}`);
 		lightApiStatus.set('ERROR');
+		toasts.add("FIAK request failed",'error')
 	} finally {
 		clearTimeout(timeoutId);
 	}

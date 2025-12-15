@@ -48,15 +48,11 @@
 
 		<!-- COLONNE DROITE : Notifications (Placeholder) -->
 		<div class="card no-margin placeholder-column">
-			<h2 class="xl-label">NOTIFICATIONS</h2>
-			<div class="notification-list-mock">
-				{#each Array(5) as _, i}
-					<div class="notif-item" style="opacity: {1 - i * 0.15}">
-						<div class="notif-icon"></div>
-						<div class="notif-text"></div>
-					</div>
-				{/each}
-			</div>
+			<iframe
+				title="notifications"
+				src="https://streamelements.com/overlay/693acf5ba716e1e1633132e2/Hd3i8bX22PdpJhl27wxoliONlagGdTIzYJqiWnlQCkoLwn9a"
+				frameborder="0"
+			></iframe>
 		</div>
 	</div>
 </div>
@@ -67,6 +63,8 @@
 		flex-direction: column;
 		max-width: 1600px;
 		margin: 0 auto;
+		padding: 10px;
+		box-sizing: border-box;
 		width: 100%;
 		gap: 1em;
 	}
@@ -167,37 +165,12 @@
 		border-radius: 50%;
 	}
 
-	/* --- Style du Mock "Notifications" --- */
-	.notification-list-mock {
+	.card iframe {
 		width: 100%;
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
+		height: 100%;
 	}
 
-	.notif-item {
-		height: 60px;
-		background: rgba(255, 255, 255, 0.05);
-		border-radius: 8px;
-		display: flex;
-		align-items: center;
-		padding: 0 1rem;
-		gap: 1rem;
-	}
 
-	.notif-icon {
-		width: 32px;
-		height: 32px;
-		background: rgba(255, 255, 255, 0.1);
-		border-radius: 50%;
-	}
-
-	.notif-text {
-		height: 10px;
-		width: 60%;
-		background: rgba(255, 255, 255, 0.1);
-		border-radius: 4px;
-	}
 
 	/* --- RESPONSIVE --- */
 	@media (max-width: 1200px) {

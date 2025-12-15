@@ -2,7 +2,7 @@
 	import { appMode } from '$lib/stores/user-store';
 	import { quickLinks } from '$lib/stores/quick-links-store';
 	import { fade } from 'svelte/transition';
-	import PlusIcon from '../icons/PlusIcon.svelte';
+	import { Plus } from '@lucide/svelte';
 	import ColorPicker from '../ColorPicker.svelte';
 	import type { QuickLink } from '$lib/types/user';
 
@@ -129,7 +129,7 @@
 		{#if $appMode === 'CONFIG' && $quickLinks.length < 5}
 			<button class="link-item add-btn" onclick={openAddModal}>
 				<div class="icon-box add-placeholder">
-					<PlusIcon />
+					<Plus />
 				</div>
 				<span class="link-title">Ajouter</span>
 			</button>

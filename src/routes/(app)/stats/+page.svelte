@@ -8,38 +8,40 @@
 <svelte:head>
 	<title>Stats - Baltrou</title>
 </svelte:head>
-<h1>Statistiques du Stream</h1>
+<div class="page-content">
+	<h1>Statistiques du Stream</h1>
 
-<div class="stats-grid">
-	<div class="card">
-		<h2>Status du Stream</h2>
-		<LiveStatus />
-	</div>
+	<div class="stats-grid">
+		<div class="card">
+			<h2>Status du Stream</h2>
+			<LiveStatus />
+		</div>
 
-	<div class="card">
-		<h2>Viewers</h2>
-		<p>{$stats.viewerCount}</p>
-	</div>
+		<div class="card">
+			<h2>Viewers</h2>
+			<p>{$stats.viewerCount}</p>
+		</div>
 
-	<div class="card">
-		<h2>Commentaires</h2>
-		<p>{$chat.messages.length}</p>
-	</div>
+		<div class="card">
+			<h2>Commentaires</h2>
+			<p>{$chat.messages.length}</p>
+		</div>
 
-	<div class="card">
-		<h2>Followers</h2>
-		<p>{$stats.followerCount}</p>
-	</div>
+		<div class="card">
+			<h2>Followers</h2>
+			<p>{$stats.followerCount}</p>
+		</div>
 
-	<div class="card">
-		<h2>Abonnés</h2>
-		<p>{$stats.subscriberCount}</p>
-	</div>
+		<div class="card">
+			<h2>Abonnés</h2>
+			<p>{$stats.subscriberCount}</p>
+		</div>
 
-	<div class="card full-width">
-		<h2>Viewers au cours du temps</h2>
-		<!-- Le graphique sera inséré ici -->
-		<ViewerGraph></ViewerGraph>
+		<div class="card full-width">
+			<h2>Viewers au cours du temps</h2>
+			<!-- Le graphique sera inséré ici -->
+			<ViewerGraph></ViewerGraph>
+		</div>
 	</div>
 </div>
 

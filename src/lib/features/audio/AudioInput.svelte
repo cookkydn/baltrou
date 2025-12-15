@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Volume2, VolumeOff } from '@lucide/svelte';
-	import ToggleSwitch from '$lib/components/ui/ToggleSwitch.svelte';
+	import ToggleSwitch from '$lib/ui/ToggleSwitch.svelte';
 	import type { AudioSource } from '$lib/stores/obs/audio';
 	import { obs } from '$lib/stores/obs';
 

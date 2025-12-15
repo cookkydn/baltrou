@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Sound } from '$lib/stores/soundboard-store';
 	import PlayIcon from './icons/PlayIcon.svelte';
-	import CloseIcon from './icons/CloseIcon.svelte';
+	import {X} from '@lucide/svelte'
 
 	// Props
 	interface Props {
@@ -89,7 +89,7 @@
 				>
 			</button>
 			<button class="action-btn delete" onclick={() => ondelete?.(sound.id)} title="Supprimer">
-				<CloseIcon />
+				<X />
 			</button>
 		{/if}
 	</div>

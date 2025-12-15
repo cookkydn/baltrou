@@ -1,0 +1,34 @@
+{
+  "id": "culture-g-potato",
+  "title": "Culture Générale Potato Corp",
+  "description": "Un petit test pour vérifier qui suit vraiment le stream.",
+  "author": "Baltrou",
+  "version": 1,
+  "mode":"speed",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Quelle est la couleur du cheval blanc d'Henri IV ?",
+      "options": [
+        { "id": "A", "label": "Blanc" },
+        { "id": "B", "label": "Noir" },
+        { "id": "C", "label": "Gris (il était sale)" },
+        { "id": "D", "label": "Rouge" }
+      ],
+      "correctOptionId": "A",
+      "explanation": "C'était un piège classique, bravo aux survivants."
+    },
+    {
+      "id": "q2",
+      "text": "Combien de pattes a une araignée ?",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXWC91Bgdp2jkvZkrRm3183Zv0gu0PVcB-4g&s",
+      "options": [
+        { "id": "A", "label": "6" },
+        { "id": "B", "label": "8" },
+        { "id": "C", "label": "10" },
+        { "id": "D", "label": "1000" }
+      ],
+      "correctOptionId": "B"
+    }
+  ]
+}

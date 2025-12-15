@@ -80,42 +80,44 @@
 	}
 </script>
 
-<h1>Ambiance Lumineuse & Sonore</h1>
+<div class="page-content">
+	<h1>Ambiance Lumineuse & Sonore</h1>
 
-<div class="ambiance-banner" style="background-color: {selectedAmbiance.color}">
-	<h2>{selectedAmbiance.name}</h2>
-</div>
+	<div class="ambiance-banner" style="background-color: {selectedAmbiance.color}">
+		<h2>{selectedAmbiance.name}</h2>
+	</div>
 
-<div class="buttons-grid">
-	{#each ambiances as ambiance}
-		<ShortcutButton
-			name={ambiance.name}
-			selected={ambiance.selected}
-			color={ambiance.color}
-			on:click={() => selectAmbiance(ambiance)}
-		>
-			<div slot="icon" class="icon-group">
-				<LightbulbIcon />
-				<MusicIcon />
-			</div>
-		</ShortcutButton>
-	{/each}
-</div>
-
-<div class="soundboard-section">
-	<h2>Soundboard</h2>
 	<div class="buttons-grid">
-		{#each $soundboardStore as sound (sound.id)}
-			<ShortcutButton on:click={() => playSound(sound)} name={sound.name}>
-				<Volume2 slot="icon" />
+		{#each ambiances as ambiance}
+			<ShortcutButton
+				name={ambiance.name}
+				selected={ambiance.selected}
+				color={ambiance.color}
+				on:click={() => selectAmbiance(ambiance)}
+			>
+				<div slot="icon" class="icon-group">
+					<LightbulbIcon />
+					<MusicIcon />
+				</div>
 			</ShortcutButton>
 		{/each}
-		{#if $soundboardStore.length == 0}
-			<div class="card center">
-				<h2>Aucun son pour l'instant</h2>
-				<p>Ajoute des son <a href="/soundboard">ici</a></p>
-			</div>
-		{/if}
+	</div>
+
+	<div class="soundboard-section">
+		<h2>Soundboard</h2>
+		<div class="buttons-grid">
+			{#each $soundboardStore as sound (sound.id)}
+				<ShortcutButton on:click={() => playSound(sound)} name={sound.name}>
+					<Volume2 slot="icon" />
+				</ShortcutButton>
+			{/each}
+			{#if $soundboardStore.length == 0}
+				<div class="card center">
+					<h2>Aucun son pour l'instant</h2>
+					<p>Ajoute des son <a href="/soundboard">ici</a></p>
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>
 

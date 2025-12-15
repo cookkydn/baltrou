@@ -1,8 +1,5 @@
 <script lang="ts">
-	import EyeIcon from '../icons/EyeIcon.svelte';
-	import GemIcon from '../icons/GemIcon.svelte';
-	import StarIcon from '../icons/StarIcon.svelte';
-	import UserIcon from '../icons/UserIcon.svelte';
+	import { Eye, Gem, User, Star } from '@lucide/svelte';
 	import LiveStatus from '../LiveStatus.svelte';
 	import { stats } from '$lib/stores/stats-store';
 	import { version } from '$app/environment';
@@ -16,19 +13,19 @@
 	{#if isLoggedIn}
 		<div class="footer-center">
 			<div class="stat-item">
-				<EyeIcon />
+				<Eye />
 				<span>{$stats.viewerCount}</span>
 			</div>
 			<div class="stat-item">
-				<UserIcon />
+				<User />
 				<span>{$stats.followerCount}</span>
 			</div>
 			<div class="stat-item">
-				<StarIcon />
+				<Star />
 				<span>{$stats.subscriberCount}</span>
 			</div>
 			<div class="stat-item">
-				<GemIcon />
+				<Gem />
 				<span>{$stats.totalBits}</span>
 			</div>
 		</div>

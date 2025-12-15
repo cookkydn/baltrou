@@ -20,6 +20,7 @@
 	} = $props();
 
 	function select(val: string) {
+		if(value == val) return;
 		value = val;
 		onChange(value);
 	}
