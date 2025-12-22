@@ -1,28 +1,46 @@
 <script lang="ts">
-	import FileDropzone from '$lib/ui/FileDropzone.svelte';
 	import { appMode } from '$lib/stores/user-store';
 	import { getApp } from '$lib/state/app.svelte';
 	import { onMount } from 'svelte';
-	const {activities: {quizModule}} = getApp();
-	let inputUrl = $state("");
-	onMount(()=> {
+	import QuizImporter from '$lib/features/activities/quiz/QuizImporter.svelte';
+	import QuizList from '$lib/features/activities/quiz/QuizList.svelte';
+	import QuizDisplay from '$lib/features/activities/quiz/QuizDisplay.svelte';
+	const {
+		activities: { quizModule }
+	} = getApp();
+	onMount(() => {
 		quizModule.load();
-	})
+	});
 	async function onFiles(files: File[]) {
 		for (let file of files) {
 			quizModule.uploadQuiz(file);
 		}
 	}
 
-	async function addQuiz(){
-		quizModule.uploadQuizByURL(inputUrl);
+	async function onUrl(url: string) {
+		quizModule.uploadQuizByURL(url);
 	}
+
+	const handleDelete = async (id: string) => {
+		if (confirm(`Supprimer le quiz "${id}" ?`)) {
+			await quizModule.deleteQuiz(id);
+		}
+	};
+
+	const handleStart = (id: string) => {
+		console.log('Start quiz:', id);
+		quizModule.loadQuiz(id);
+	};
 </script>
 
 {#if $appMode == 'CONFIG'}
-	<FileDropzone accept={['.json']} label="Ajouter des quiz" multiple {onFiles} />
+	<QuizImporter class="card" {onFiles} {onUrl} />
 {/if}
-<input type="url" name="quizUrl" id="quizUrl" bind:value={inputUrl}>
-<button title="Send" type="submit" onclick={addQuiz}>Envoyer</button>
 
-<pre>{quizModule.quizList}</pre>
+<div class="card">
+	<h2>Quiz Disponibles</h2>
+	<QuizList quizzes={quizModule.quizList} onStart={handleStart} onDelete={handleDelete} />
+</div>
+{#if quizModule.liveState}
+	<QuizDisplay activeQuiz={quizModule.liveState} />
+{/if}

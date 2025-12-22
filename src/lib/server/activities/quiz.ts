@@ -1,30 +1,35 @@
-import type { ValidationResult } from "$lib/types/quiz";
+import type { Quiz, QuizMetadata, ValidationResult } from "$lib/types/activities/quiz";
 import { error } from "@sveltejs/kit";
 import { db } from "../db";
+import { rm } from "fs/promises";
 
-export async function getQuizzes(userId:string): Promise<string[]> {
+export async function getQuizzes(userId:string): Promise<QuizMetadata[]> {
 	await db.read();
 	const user = db.data.users.find(u=>u.id == userId);
   if(!user) {
     throw error(404,"User not found")
   }
-	return user.quizList;
+	return user.activities.quizList;
 }
 
-export async function addQuiz(quizId: string, userId: string) {
+export async function addQuiz(metadata:QuizMetadata, userId: string) {
   await db.read();
   const user = db.data.users.find(u=>u.id == userId);
   if(!user) {
     throw error(404,"User not found")
   }
-	if(user.quizList){
-		if(!user.quizList.includes(quizId)) {
-			user.quizList = [quizId, ...user.quizList];
+	if(user.activities.quizList){
+		if(!user.activities.quizList.map(q=>q.id).includes(metadata.id)) {
+			user.activities.quizList = [metadata, ...user.activities.quizList];
 		}
 	} else {
-		user.quizList = [quizId]
+		user.activities.quizList = [metadata]
 	}
   await db.write();
+}
+
+export function extractQuizMetadata(data: Quiz): QuizMetadata {
+	return {id: data.id, questionCount: data.questions.length, title: data.title}
 }
 
 export function validateQuizSet(data: any): ValidationResult {
@@ -80,4 +85,15 @@ export function validateQuizSet(data: any): ValidationResult {
 	}
 
 	return { isValid: true };
+}
+
+export async function deleteQuiz(quizId: string, userId: string){
+	await rm(`data/quizzes/${quizId}.json`);
+	await db.read();
+	const user = db.data.users.find(u=>u.id == userId);
+  if(!user) {
+    throw error(404,"User not found")
+  }
+	user.activities.quizList = user.activities.quizList.filter(q=>q.id != quizId);
+	await db.write()
 }

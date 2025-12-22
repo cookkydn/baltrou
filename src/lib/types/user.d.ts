@@ -1,3 +1,5 @@
+import type { ActivitiesData } from "./activities/activities";
+
 export type User = {
 	id: string;
 	userLogin: string;
@@ -6,7 +8,7 @@ export type User = {
 	timerTargetDate: Date | null;
   quickLinks: QuickLink[];
 	viewerHistory: ViewerRecord[];
-	quizList: string[];
+	activities: ActivitiesData;
 };
 
 export type Credentials = {

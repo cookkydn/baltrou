@@ -1,7 +1,7 @@
 {
 	"name": "baltrou",
 	"private": true,
-	"version": "0.1.9",
+	"version": "0.1.10",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -41,6 +41,7 @@
 		"dayjs": "^1.11.19",
 		"dotenv": "^17.2.3",
 		"lowdb": "^7.0.1",
+		"mime": "^4.1.0",
 		"node-cron": "^4.2.1",
 		"obs-websocket-js": "^5.0.7",
 		"tmi.js": "^1.8.5"

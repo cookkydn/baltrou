@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { chat, type ChatMessage } from '$lib/stores/chat-store';
 	import { onMount } from 'svelte';
-	import {Pin} from '@lucide/svelte'
+	import { Pin } from '@lucide/svelte';
 
 	let messageToSend = '';
 	let chatContainer: HTMLElement;
@@ -9,6 +9,7 @@
 	function pinMessage(message: ChatMessage) {
 		$chat.pinnedMessage = message;
 		chat.set($chat);
+		localStorage.setItem('baltrou_chat_history', JSON.stringify($chat));
 	}
 
 	onMount(() => {
@@ -20,7 +21,7 @@
 	async function sendMessage() {
 		if (messageToSend.trim() === '') return;
 		const messageContent = messageToSend;
-		messageToSend = ''
+		messageToSend = '';
 		try {
 			await fetch('/api/chat', {
 				method: 'POST',

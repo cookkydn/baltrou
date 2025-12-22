@@ -26,26 +26,17 @@ const defaultState: ChatStoreState = {
  */
 function getInitialState(): ChatStoreState {
 	if (typeof window === 'undefined') {
-		return defaultState; // Côté SSR, on retourne l'état par défaut
+		return defaultState;
 	}
 
 	try {
 		const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
 		if (stored) {
 			const parsed = JSON.parse(stored);
-
-			// On retourne les messages stockés.
-			// On réinitialise 'pinnedMessage' à null au rechargement
-			// car la persistence du message épinglé est plus complexe
-			// et nécessiterait une vérification de validité (il peut être supprimé).
-			return {
-				messages: parsed.messages || [],
-				pinnedMessage: null
-			};
+			return parsed;
 		}
 	} catch (e) {
 		console.error("Erreur lors du chargement de l'historique du chat:", e);
-		// En cas d'erreur de parsing, on efface les données corrompues et on recommence
 		localStorage.removeItem(LOCAL_STORAGE_KEY);
 	}
 

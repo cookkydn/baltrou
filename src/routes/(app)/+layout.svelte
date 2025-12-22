@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DebugPanel from '$lib/components/debug/DebugPanel.svelte';
-	import Footer from '$lib/components/layout/Footer.svelte';
+	import Footer from '$lib/layout/Footer.svelte';
 	import ToastContainer from '$lib/components/ToastContainer.svelte';
 	import { appMode, auth, timer } from '$lib/stores/user-store.js';
 	import { chat } from '$lib/stores/chat-store.js';
@@ -10,8 +10,10 @@
 	import { obs } from '$lib/stores/obs';
 	import { ConnectionStatus } from '$lib/types/status';
 	import { quickLinks } from '$lib/stores/quick-links-store';
-	import { getUserInfo } from '$lib/services/auth.service';
 	import { events } from '$lib/stores/event-store';
+	import { getUserInfo } from '$lib/features/auth/auth.svelte';
+	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 
 	let { children } = $props();
 	const status = obs.client.status;
@@ -33,9 +35,13 @@
 			auth.set(true);
 		} else {
 			auth.set(false);
+			if (page.route.id != '/(app)') {
+				goto('/login');
+			}
 		}
 	});
 </script>
+
 <ToastContainer />
 <div class="app">
 	<header>
@@ -73,7 +79,7 @@
 	.app {
 		display: flex;
 		flex-direction: column;
-		height: 100vh; 
+		height: 100vh;
 		width: 100vw;
 	}
 
@@ -86,8 +92,8 @@
 	}
 
 	main {
-		flex-grow: 1; 
-		overflow-y: auto; 
+		flex-grow: 1;
+		overflow-y: auto;
 		display: flex;
 		flex-direction: column;
 		position: relative;

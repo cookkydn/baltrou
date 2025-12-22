@@ -8,13 +8,13 @@ export interface QuizQuestion {
 	text: string; 
 	image?: string; 
 	options: QuizOption[]; 
-	correctOptionId: string;
-	mode: 'default' | 'speed'
+	correctOptionId: string | string[];
 	explanation?: string;
 }
 
 export interface Quiz {
 	id: string;
+	mode: 'default' | 'speed'
 	title: string;
 	description?: string;
 	author?: string;
@@ -25,4 +25,19 @@ export interface Quiz {
 export interface ValidationResult {
 	isValid: boolean;
 	error?: string;
+}
+
+export interface QuizMetadata {
+	id: string,
+	title: string,
+	questionCount: number;
+}
+
+export interface ActiveQuiz {
+	metadata: QuizMetadata;
+	mode: 'default' | 'speed';
+	questionNumber: number;
+	question: QuizQuestion;
+	revealAnswer: boolean;
+
 }

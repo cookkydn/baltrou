@@ -1,5 +1,5 @@
 <script>
-	import Clock from '$lib/components/widgets/Clock.svelte';
+	import Clock from '$lib/features/homepage/Clock.svelte';
 	import QuickLinks from '$lib/components/widgets/QuickLinks.svelte';
 	import Timer from '$lib/components/widgets/Timer.svelte';
 </script>
@@ -169,8 +169,6 @@
 		width: 100%;
 		height: 100%;
 	}
-
-
 
 	/* --- RESPONSIVE --- */
 	@media (max-width: 1200px) {

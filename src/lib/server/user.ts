@@ -1,8 +1,8 @@
 import { env } from '$env/dynamic/private';
-import type { TwitchUser } from '$lib/types';
 import type { Credentials, User, ViewerRecord } from '$lib/types/user';
 import { error } from '@sveltejs/kit';
 import { db } from './db';
+import type { TwitchUser } from '$lib/types/twitch';
 
 export const DEFAULT_USER: Omit<User, 'id' | 'credentials' | 'userLogin'> = {
 	isInConfigMode: true,
@@ -12,6 +12,11 @@ export const DEFAULT_USER: Omit<User, 'id' | 'credentials' | 'userLogin'> = {
 		{ id: crypto.randomUUID(), title: 'YouTube', url: 'https://youtube.com', color: '#831100' }
 	],
 	viewerHistory: [],
+	activities: {
+		activeQuiz: null,
+		players: [],
+		quizList: []
+	}
 };
 
 export async function getTwitchUserInfo(accessToken: string): Promise<TwitchUser | null> {

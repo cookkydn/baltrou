@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Sound } from '$lib/stores/soundboard-store';
-	import PlayIcon from './icons/PlayIcon.svelte';
-	import {X} from '@lucide/svelte'
+	import {X, Play} from '@lucide/svelte'
 
 	// Props
 	interface Props {
@@ -39,7 +38,7 @@
 <div class="card sound-item">
 	<button class="play-btn" onclick={() => onplay?.(sound.id)} title="Jouer le son">
 		<div class="icon-wrapper">
-			<PlayIcon />
+			<Play />
 		</div>
 	</button>
 

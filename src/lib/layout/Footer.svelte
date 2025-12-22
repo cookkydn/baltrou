@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Eye, Gem, User, Star } from '@lucide/svelte';
-	import LiveStatus from '../LiveStatus.svelte';
 	import { stats } from '$lib/stores/stats-store';
 	import { version } from '$app/environment';
+	import LiveStatus from '$lib/components/LiveStatus.svelte';
 	export let isLoggedIn: Boolean;
 </script>
 

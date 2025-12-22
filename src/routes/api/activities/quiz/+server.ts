@@ -1,4 +1,9 @@
-import { addQuiz, getQuizzes, validateQuizSet } from '$lib/server/activities/quiz';
+import {
+	addQuiz,
+	extractQuizMetadata,
+	getQuizzes,
+	validateQuizSet
+} from '$lib/server/activities/quiz';
 import { getUserFromCookies } from '$lib/server/auth';
 import { error, json } from '@sveltejs/kit';
 import { mkdir, writeFile } from 'fs/promises';
@@ -51,10 +56,9 @@ export async function POST({ request, cookies }) {
 	await mkdir(uploadDir, { recursive: true });
 
 	await writeFile(filePath, JSON.stringify(quizData, null, 2), 'utf-8');
-	await addQuiz(quizData.id, user.id);
+	const metadata = extractQuizMetadata(quizData);
+	await addQuiz(metadata, user.id);
 	console.log(`[QUIZ] Nouveau quiz sauvegardé : ${fileName}`);
 
-	return json({
-		quizId: quizData.id
-	});
+	return json(metadata);
 }

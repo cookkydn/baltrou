@@ -1,10 +1,9 @@
 <script lang="ts">
-	import LightbulbIcon from '$lib/components/icons/LightbulbIcon.svelte';
-	import MusicIcon from '$lib/components/icons/MusicIcon.svelte';
-	import ShortcutButton from '$lib/components/icons/ShortcutButton.svelte';
+	import ShortcutButton from '$lib/components/ShortcutButton.svelte';
 	import { Volume2 } from '@lucide/svelte';
 	import { lightApiUrl } from '$lib/stores/fiak-store';
 	import { soundboardStore, type Sound } from '$lib/stores/soundboard-store';
+	import { Lightbulb, Music } from '@lucide/svelte';
 
 	type Ambiance = {
 		name: string;
@@ -96,8 +95,8 @@
 				on:click={() => selectAmbiance(ambiance)}
 			>
 				<div slot="icon" class="icon-group">
-					<LightbulbIcon />
-					<MusicIcon />
+					<Lightbulb />
+					<Music />
 				</div>
 			</ShortcutButton>
 		{/each}
