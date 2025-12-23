@@ -5,15 +5,10 @@ import path from 'path';
 
 const FILE_PATH = path.resolve('data/live-quiz.json');
 
-export async function GET({ cookies }) {
-	const user = await getUserFromCookies(cookies);
-	if (!user) {
-		throw error(401, 'Non autorisé');
-	}
-
+export async function GET() {
 	try {
 		const data = await readFile(FILE_PATH, 'utf-8');
-		return new Response(JSON.parse(data), {
+		return new Response(JSON.stringify(data), {
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Access-Control-Allow-Methods': 'GET',
