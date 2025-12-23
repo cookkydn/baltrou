@@ -63,8 +63,9 @@
 			<div class="upload-overlay">
 				<FileDropzone
 					accept={['.jpg', '.png', '.webp', '.heic']}
-					label="Changer l'image"
+					label=""
 					onFiles={handleFileSelect}
+					mini
 				/>
 			</div>
 		</div>

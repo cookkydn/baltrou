@@ -56,7 +56,7 @@
 		width: 100%;
 		max-width: 1600px;
 		margin: 0 auto;
-		padding: 2rem;
+		padding: 2rem 2rem 3rem;
 		box-sizing: border-box;
 		min-height: min-content;
 	}

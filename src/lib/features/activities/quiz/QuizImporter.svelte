@@ -24,7 +24,7 @@
 </script>
 
 <div class="quiz-importer {className}">
-  <h2>Importer un quiz</h2>
+	<h2>Importer un quiz</h2>
 	<div class="section">
 		<h3 class="label">Depuis un fichier</h3>
 		<FileDropzone
@@ -53,6 +53,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
+		margin: 0;
 	}
 
 	.label {

@@ -1,20 +1,20 @@
 export interface QuizOption {
-	id: string; 
+	id: string;
 	label: string;
 }
 
 export interface QuizQuestion {
 	id: string;
-	text: string; 
-	image?: string; 
-	options: QuizOption[]; 
+	text: string;
+	image?: string;
+	options: QuizOption[];
 	correctOptionId: string | string[];
 	explanation?: string;
 }
 
 export interface Quiz {
 	id: string;
-	mode: 'default' | 'speed'
+	mode: 'standart' | 'speed';
 	title: string;
 	description?: string;
 	author?: string;
@@ -28,16 +28,16 @@ export interface ValidationResult {
 }
 
 export interface QuizMetadata {
-	id: string,
-	title: string,
+	id: string;
+	title: string;
 	questionCount: number;
 }
 
 export interface ActiveQuiz {
 	metadata: QuizMetadata;
-	mode: 'default' | 'speed';
+	mode: 'standart' | 'speed';
 	questionNumber: number;
 	question: QuizQuestion;
 	revealAnswer: boolean;
-
+	currentPlayerIndex: number;
 }

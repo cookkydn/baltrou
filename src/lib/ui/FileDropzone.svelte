@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { toasts } from '$lib/stores/toast-store';
-	import { Folder, TriangleAlert } from '@lucide/svelte';
+	import { Check, Folder, TriangleAlert } from '@lucide/svelte';
 
 	// 1. Définition des Props avec une interface TypeScript
 	interface Props {
 		accept?: string[];
 		multiple?: boolean;
 		label?: string;
+		mini?: boolean;
 		// Voici le remplaçant de l'événement : un callback prop
 		onFiles?: (files: File[]) => void;
 	}
@@ -16,6 +16,7 @@
 		accept = [],
 		multiple = false,
 		label = 'Déposez vos fichiers ici',
+		mini = false,
 		onFiles: onfiles
 	}: Props = $props();
 
@@ -24,11 +25,6 @@
 
 	let status = $state<DropStatus>('idle');
 	let errorMessage = $state<string | null>(null);
-	let errorToast = $derived.by(() => {
-		if (errorMessage) {
-			toasts.add(errorMessage, 'error');
-		}
-	});
 	let inputElement: HTMLInputElement;
 
 	// --- Logique de validation ---
@@ -113,15 +109,22 @@
 	<div class="content">
 		{#if status === 'error'}
 			<span class="icon"><TriangleAlert /></span>
-			<p>{errorMessage}</p>
+			{#if !mini}
+				<p>{errorMessage}</p>
+			{/if}
 		{:else if status === 'success'}
-			<span class="icon">✓</span>
-			<p>Fichiers reçus !</p>
+			<span class="icon"><Check /></span>
+			{#if !mini}
+				<p>Fichiers reçus !</p>
+			{/if}
 		{:else}
 			<span class="icon"><Folder /></span>
-			<p>{label}</p>
-			{#if accept.length != 0}
-				<small class="formats">Formats acceptés {accept.join(' ')}</small>
+			{#if !mini}
+				<p>{label}</p>
+
+				{#if accept.length != 0}
+					<small class="formats">Formats acceptés {accept.join(' ')}</small>
+				{/if}
 			{/if}
 		{/if}
 	</div>

@@ -5,8 +5,8 @@ import type { ActiveQuiz, Quiz, QuizMetadata } from '$lib/types/activities/quiz'
 export class QuizModule {
 	app: App;
 	quizList: QuizMetadata[] = $state([]);
-	loadedQuiz: Quiz|null = $state(null);
-	liveState: ActiveQuiz|null = $state(null);
+	loadedQuiz: Quiz | null = $state(null);
+	liveState: ActiveQuiz | null = $state(null);
 	isLoaded = $state(false);
 	constructor(app: App) {
 		this.app = app;
@@ -15,7 +15,7 @@ export class QuizModule {
 
 	async load() {
 		if (this.isLoaded) return;
-		const res = await fetch('/api/activities/quiz');
+		let res = await fetch('/api/activities/quiz');
 		if (res.ok) {
 			const quizList: QuizMetadata[] = await res.json();
 			this.quizList = quizList;
@@ -24,6 +24,20 @@ export class QuizModule {
 			toasts.add('Failed to fetch quiz list', 'error');
 		}
 		console.log(`[QUIZ] Loaded ${this.quizList.length} quizzes`);
+		res = await fetch('/api/activities/quiz/live');
+		if (res.ok) {
+			const liveState: ActiveQuiz = await res.json();
+			if (liveState != null) {
+				await this.loadQuiz(liveState.metadata.id);
+				this.liveState = liveState;
+			}
+		} else {
+			console.error(res.text);
+			toasts.add('Failed to fetch active quiz', 'error');
+		}
+		if (this.liveState) {
+			console.log(`[QUIZ] Loaded active quiz`);
+		}
 		this.isLoaded = true;
 	}
 
@@ -72,8 +86,9 @@ export class QuizModule {
 				question: quiz.questions[0],
 				questionNumber: 0,
 				revealAnswer: false,
-				mode: quiz.mode
-			}
+				mode: quiz.mode,
+				currentPlayerIndex: 0
+			};
 			console.log(`[QUIZ] loaded quiz ${quizId}`);
 		} else {
 			console.error(res.text);
@@ -90,6 +105,32 @@ export class QuizModule {
 		} else {
 			console.error(await res.text());
 			toasts.add('Erreur lors de la suppression du quiz', 'error');
+		}
+	}
+
+	async endQuiz() {
+		this.loadedQuiz = null;
+		this.liveState = null;
+		const res = await fetch('/api/activities/quiz/live', {
+			method: 'POST',
+			body: JSON.stringify(null)
+		});
+		if (res.ok) {
+			toasts.add('Quiz terminé', 'success');
+		} else {
+			console.error(await res.text());
+			toasts.add('Erreur lors de la complétion du quiz', 'error');
+		}
+	}
+
+	async updateState() {
+		const res = await fetch('/api/activities/quiz/live', {
+			method: 'POST',
+			body: JSON.stringify(this.liveState)
+		});
+		if (!res.ok) {
+			console.error(await res.text());
+			toasts.add("Erreur lors de l'update du quiz", 'error');
 		}
 	}
 

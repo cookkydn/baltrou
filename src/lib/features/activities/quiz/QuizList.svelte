@@ -19,7 +19,7 @@
 	{#each quizzes as quiz}
 		<div class="quiz-item card no-margin">
 			<span class="quiz-name">{quiz.title} - {quiz.questionCount} questions</span>
-			
+
 			<div class="actions">
 				<Button variant="success" onclick={() => onStart(quiz.id)} title="Lancer ce quiz">
 					<Play size={16} />
@@ -45,7 +45,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
-		margin-top: 1rem;
+		margin: 0;
 	}
 
 	.quiz-item {
@@ -68,7 +68,7 @@
 		display: flex;
 		gap: 0.5rem;
 		align-items: center;
-    margin-left: 1em;
+		margin-left: 1em;
 	}
 
 	.empty-state {
