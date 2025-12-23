@@ -8,7 +8,11 @@
 		PartyPopper,
 		MessageSquareText,
 		Timer,
-		type Icon
+		type Icon,
+		Monitor,
+		Cast,
+		RadioTower,
+		PanelTop
 	} from '@lucide/svelte';
 	import SegmentedToggle from '$lib/ui/SegmentedToggle.svelte';
 	import { lightApiUrl } from '$lib/stores/fiak-store';
@@ -19,7 +23,8 @@
 		bottom: 'reset',
 		right: 'reset',
 		left: 'reset',
-		top: 'reset'
+		top: 'reset',
+		screen: 'main'
 	});
 
 	const configs: {
@@ -52,8 +57,8 @@
 			label: 'Bottom',
 			options: [
 				{ label: 'Hide', value: 'reset', icon: EyeOff },
-				{ label: 'Stats', value: 'stats', icon: ChartArea },
-				{ label: 'Pin', value: 'pin', icon: Pin }
+				{ label: 'Stats', value: 'stats', icon: ChartArea }
+				// { label: 'Pin', value: 'pin', icon: Pin }
 			]
 		},
 		{
@@ -81,13 +86,25 @@
 				{ label: 'Hide', value: 'reset', icon: EyeOff },
 				{ label: 'Countdown', value: 'countdown', icon: Timer }
 			]
+		},
+		{
+			id: 'screen',
+			label: 'Ecrans',
+			options: [
+				{ label: 'Main', value: 'main', icon: Monitor },
+				{ label: 'WL', value: 'wl', icon: Cast },
+				{ label: 'TP', value: 'teleport', icon: RadioTower },
+				{ label: 'Baltrou', value: 'baltrou', icon: PanelTop }
+			]
 		}
 	];
 
 	function callAPI(configId: string, value: string) {
 		let url = $lightApiUrl;
-		if(['main','secondary'].includes(configId)){
+		if (['main', 'secondary'].includes(configId)) {
 			url += `/camera/${configId}/${value}`;
+		} else if (configId == 'screen') {
+			url += `/${configId}/${value}`;
 		} else {
 			url += `/overlay/${configId}/${value}`;
 		}
