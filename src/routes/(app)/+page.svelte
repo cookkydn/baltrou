@@ -20,12 +20,7 @@
 		<!-- COLONNE GAUCHE : En Cours (Placeholder) -->
 		<div class="card no-margin placeholder-column">
 			<h2 class="xl-label">EN COURS</h2>
-			<div class="placeholder-content">
-				<!-- Image Placeholder style Stream Preview -->
-				<div class="stream-preview-mock">
-					<div class="logo-mock">B</div>
-				</div>
-			</div>
+			<img style="width: 100%;" src="/home.png" alt="placeholder banner" />
 		</div>
 
 		<!-- COLONNE CENTRALE : Widgets (Timer, Clock, Links) -->
@@ -128,41 +123,6 @@
 		padding: 1.5rem;
 		box-sizing: border-box;
 		height: 100%;
-	}
-
-	/* --- Style du Mock "En Cours" --- */
-	.placeholder-content {
-		flex-grow: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 100%;
-		gap: 1rem;
-	}
-
-	.stream-preview-mock {
-		width: 80%;
-		aspect-ratio: 3/4;
-		background: black;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 4px;
-	}
-
-	.logo-mock {
-		font-size: 4rem;
-		font-family: 'Bebas Neue';
-		color: rgba(255, 255, 255, 0.2);
-		border: 2px solid rgba(255, 255, 255, 0.2);
-		width: 80px;
-		height: 80px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 50%;
 	}
 
 	.card iframe {
