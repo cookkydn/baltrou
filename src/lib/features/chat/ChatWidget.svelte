@@ -1,37 +1,39 @@
 <script lang="ts">
-	import { chat, type ChatMessage } from '$lib/stores/chat-store';
-	import { onMount } from 'svelte';
-	import { Pin } from '@lucide/svelte';
+	import { getApp } from '$lib/state/app.svelte';
+	import { toasts } from '$lib/stores/toast-store';
 
-	let messageToSend = '';
+	const { chatModule } = getApp();
+
+	let messageToSend = $state('');
 	let chatContainer: HTMLElement;
+	let isSending = $state(false);
 
-	function pinMessage(message: ChatMessage) {
-		$chat.pinnedMessage = message;
-		chat.set($chat);
-		localStorage.setItem('baltrou_chat_history', JSON.stringify($chat));
-	}
-
-	onMount(() => {
+	$effect(() => {
+		chatModule.messages.length;
 		if (chatContainer) {
 			chatContainer.scrollTop = chatContainer.scrollHeight;
 		}
 	});
 
-	async function sendMessage() {
-		if (messageToSend.trim() === '') return;
+	async function sendMessage(e?: Event) {
+		e?.preventDefault();
+		if (messageToSend.trim() === '' || isSending) return;
+
 		const messageContent = messageToSend;
-		messageToSend = '';
+		isSending = true;
+
 		try {
 			await fetch('/api/chat', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ message: messageContent.trim() })
 			});
+			messageToSend = '';
 		} catch (error) {
 			console.error('Error sending message:', error);
+			toasts.add('Failed to send chat message', 'error');
+		} finally {
+			isSending = false;
 		}
 	}
 </script>
@@ -39,33 +41,29 @@
 <div class="card chat-container">
 	<h2>Chat</h2>
 	<div class="chat-messages" bind:this={chatContainer}>
-		{#each $chat.messages as message (message.id)}
+		{#each chatModule.messages as message (message.id)}
 			<div class="message">
 				<div class="message-content">
 					<strong style="color: {message.color}">{message.user}:</strong>
 					<span>{message.message}</span>
 				</div>
-				<!-- Temporary removed pins -->
-				<!-- <button class="pin-button" onclick={() => pinMessage(message)}>
-					<Pin />
-				</button> -->
 			</div>
 		{/each}
 	</div>
-	<div class="chat-input">
+
+	<form class="chat-input" onsubmit={sendMessage}>
 		<input
 			type="text"
 			placeholder="Envoyer un message..."
 			bind:value={messageToSend}
-			onkeydown={(e) => {
-				if (e.key === 'Enter') sendMessage();
-			}}
+			disabled={isSending}
 		/>
-		<button onclick={sendMessage} disabled={messageToSend.trim() === ''}> Envoyer </button>
-	</div>
+		<button type="submit" disabled={messageToSend.trim() === '' || isSending}>
+			{isSending ? '...' : 'Envoyer'}
+		</button>
+	</form>
 </div>
 
-<!-- Le style reste le même -->
 <style>
 	.chat-container {
 		padding: 1rem;
@@ -95,28 +93,6 @@
 	.message:hover {
 		background-color: rgba(255, 255, 255, 0.1);
 	}
-
-	/* .message .pin-button {
-		opacity: 1;
-		transition: opacity 0.2s;
-	}
-
-	@media (hover: hover) {
-		.message .pin-button {
-			opacity: 0;
-		}
-
-		.message:hover .pin-button {
-			opacity: 1;
-		}
-	}
-
-	.pin-button {
-		background: none;
-		border: none;
-		color: white;
-		cursor: pointer;
-	} */
 
 	.chat-input {
 		display: flex;

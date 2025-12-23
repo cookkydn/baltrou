@@ -1,8 +1,9 @@
 <script>
 	import LiveStatus from '$lib/components/LiveStatus.svelte';
 	import ViewerGraph from '$lib/components/ViewerGraph.svelte';
-	import { chat } from '$lib/stores/chat-store';
+	import { getApp } from '$lib/state/app.svelte';
 	import { stats } from '$lib/stores/stats-store';
+	const { chatModule } = getApp();
 </script>
 
 <svelte:head>
@@ -24,7 +25,7 @@
 
 		<div class="card">
 			<h2>Commentaires</h2>
-			<p>{$chat.messages.length}</p>
+			<p>{chatModule.messages.length}</p>
 		</div>
 
 		<div class="card">

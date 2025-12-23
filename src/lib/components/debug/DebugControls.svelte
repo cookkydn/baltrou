@@ -1,37 +1,9 @@
 <script lang="ts">
 	import { asset } from '$app/paths';
-	import { chat } from '$lib/stores/chat-store';
-	import { events } from '$lib/stores/event-store';
-	import { obs } from '$lib/stores/obs';
+	import { getApp } from '$lib/state/app.svelte';
 	import { toasts } from '$lib/stores/toast-store';
-	import ColorPicker from '../ColorPicker.svelte';
 
-	// La clé doit être identique à celle utilisée dans chatStore.ts
-	const LOCAL_STORAGE_KEY = 'baltrou_chat_history';
-
-	function clearChatHistory() {
-		// 1. Mettre à jour l'état actuel du store en mémoire
-		// (Nous réinitialisons les messages, mais gardons
-		//  le message épinglé s'il existe)
-		chat.update((currentState) => {
-			return {
-				messages: [],
-				pinnedMessage: currentState.pinnedMessage
-			};
-		});
-
-		// 2. Vider également le stockage persistant (LocalStorage)
-		//    pour que l'historique ne revienne pas au rechargement.
-		if (typeof window !== 'undefined') {
-			try {
-				// Nous pourrions sauvegarder l'état vide, mais
-				// supprimer la clé est tout aussi efficace.
-				localStorage.removeItem(LOCAL_STORAGE_KEY);
-			} catch (e) {
-				console.error("Erreur lors du nettoyage de l'historique du chat (localStorage):", e);
-			}
-		}
-	}
+	const { chatModule } = getApp();
 
 	function sendDebugSound() {
 		fetch('/api/events', {
@@ -62,10 +34,12 @@
 
 <div class="debug-controls">
 	<h4>Contrôles de Debug</h4>
-	<button class="danger-btn" on:click={clearChatHistory}> Vider l'historique du Chat </button>
-	<button class="danger-btn" on:click={sendDebugSound}>Envoyer le son de débug</button>
-	<button class="danger-btn" on:click={testToast}>Tester les toasts</button>
-	<button class="danger-btn" on:click={setFullscreen}>Mettre en fullscreen</button>
+	<button class="danger-btn" onclick={chatModule.clearMessages}>
+		Vider l'historique du Chat
+	</button>
+	<button class="danger-btn" onclick={sendDebugSound}>Envoyer le son de débug</button>
+	<button class="danger-btn" onclick={testToast}>Tester les toasts</button>
+	<button class="danger-btn" onclick={setFullscreen}>Mettre en fullscreen</button>
 </div>
 
 <style>

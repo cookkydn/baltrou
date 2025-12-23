@@ -3,7 +3,6 @@
 	import Footer from '$lib/layout/Footer.svelte';
 	import ToastContainer from '$lib/components/ToastContainer.svelte';
 	import { appMode, auth, timer } from '$lib/stores/user-store.js';
-	import { chat } from '$lib/stores/chat-store.js';
 	import { stats } from '$lib/stores/stats-store.js';
 	import { onMount } from 'svelte';
 	import './app.css';
@@ -18,7 +17,6 @@
 	let { children } = $props();
 	const status = obs.client.status;
 	onMount(async () => {
-		$chat;
 		$stats;
 		$events;
 		$auth = false;

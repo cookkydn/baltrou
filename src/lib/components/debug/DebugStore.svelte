@@ -5,7 +5,6 @@
 <script lang="ts">
 	// 1. Importer les stores que nous voulons surveiller
 	import { events } from '$lib/stores/event-store';
-	import { chat } from '$lib/stores/chat-store';
 	import { stats } from '$lib/stores/stats-store';
 	import { obs } from '$lib/stores/obs';
 	import { jsonReplacer } from '$lib/utils';
@@ -49,12 +48,6 @@
 	<div class="store-display">
 		<h3>stats (Stats store)</h3>
 		<pre>{JSON.stringify($stats, jsonReplacer, 2)}</pre>
-	</div>
-
-	<!-- Store: chat store -->
-	<div class="store-display">
-		<h3>chat (Chat Store)</h3>
-		<pre>{JSON.stringify($chat, jsonReplacer, 2)}</pre>
 	</div>
 
 	<!-- Store: eventStore -->
