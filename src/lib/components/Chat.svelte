@@ -45,9 +45,10 @@
 					<strong style="color: {message.color}">{message.user}:</strong>
 					<span>{message.message}</span>
 				</div>
-				<button class="pin-button" onclick={() => pinMessage(message)}>
+				<!-- Temporary removed pins -->
+				<!-- <button class="pin-button" onclick={() => pinMessage(message)}>
 					<Pin />
-				</button>
+				</button> -->
 			</div>
 		{/each}
 	</div>
@@ -95,7 +96,7 @@
 		background-color: rgba(255, 255, 255, 0.1);
 	}
 
-	.message .pin-button {
+	/* .message .pin-button {
 		opacity: 1;
 		transition: opacity 0.2s;
 	}
@@ -115,7 +116,7 @@
 		border: none;
 		color: white;
 		cursor: pointer;
-	}
+	} */
 
 	.chat-input {
 		display: flex;
