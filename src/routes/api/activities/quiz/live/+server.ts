@@ -13,7 +13,13 @@ export async function GET({ cookies }) {
 
 	try {
 		const data = await readFile(FILE_PATH, 'utf-8');
-		return json(JSON.parse(data));
+		return new Response(JSON.parse(data), {
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': 'GET',
+				'Access-Control-Allow-Headers': 'Content-Type'
+			}
+		});
 	} catch (err) {
 		console.error('[LIVE-QUIZ] Erreur lecture :', err);
 		throw error(404, 'Aucun quiz live trouvé');
