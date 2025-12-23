@@ -8,7 +8,7 @@ const FILE_PATH = path.resolve('data/live-quiz.json');
 export async function GET() {
 	try {
 		const data = await readFile(FILE_PATH, 'utf-8');
-		return new Response(JSON.stringify(data), {
+		return json(data, {
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Access-Control-Allow-Methods': 'GET',
