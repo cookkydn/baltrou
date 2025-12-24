@@ -8,7 +8,6 @@
 	const {
 		activities: { quizModule, playersModule }
 	} = getApp();
-	let currentAnswers: Record<string, string> = $state({});
 	onMount(() => {
 		quizModule.load();
 		playersModule.load();
@@ -33,7 +32,6 @@
 		console.log('Start quiz:', id);
 		await quizModule.loadQuiz(id);
 		quizModule.updateState();
-		currentAnswers = {};
 	};
 
 	const handleAnwser = (playerId: string, anwser: string) => {
@@ -46,13 +44,20 @@
 				return;
 			}
 			if (Array.isArray(quizModule.liveState.question.correctOptionId)) {
-				if (quizModule.liveState.question.correctOptionId.includes(currentAnswers[player.id])) {
+				if (
+					quizModule.liveState.question.correctOptionId.includes(
+						quizModule.liveState.playerAnwsers[player.id]
+					)
+				) {
 					playersModule.setScore(playerId, player.score + 1);
 				} else {
 					playersModule.setScore(playerId, player.score - 1);
 				}
 			} else {
-				if (currentAnswers[player.id] == quizModule.liveState.question.correctOptionId) {
+				if (
+					quizModule.liveState.playerAnwsers[player.id] ==
+					quizModule.liveState.question.correctOptionId
+				) {
 					playersModule.setScore(playerId, player.score + 1);
 				} else {
 					playersModule.setScore(playerId, player.score - 1);
@@ -60,17 +65,24 @@
 			}
 			quizModule.liveState.revealAnswer = true;
 		} else {
-			currentAnswers[playerId] = anwser;
+			quizModule.liveState.playerAnwsers[playerId] = anwser;
 			quizModule.liveState.currentPlayerIndex += 1;
 			if (quizModule.liveState.currentPlayerIndex >= playersModule.players.length) {
 				quizModule.liveState.revealAnswer = true;
 				for (let player of playersModule.players) {
 					if (Array.isArray(quizModule.liveState.question.correctOptionId)) {
-						if (quizModule.liveState.question.correctOptionId.includes(currentAnswers[player.id])) {
+						if (
+							quizModule.liveState.question.correctOptionId.includes(
+								quizModule.liveState.playerAnwsers[player.id]
+							)
+						) {
 							playersModule.setScore(player.id, player.score + 1);
 						}
 					} else {
-						if (currentAnswers[player.id] == quizModule.liveState.question.correctOptionId) {
+						if (
+							quizModule.liveState.playerAnwsers[player.id] ==
+							quizModule.liveState.question.correctOptionId
+						) {
 							playersModule.setScore(player.id, player.score + 1);
 						}
 					}
@@ -85,7 +97,7 @@
 		if (!quizModule.liveState || !quizModule.loadedQuiz) {
 			return;
 		}
-		currentAnswers = {};
+		quizModule.liveState.playerAnwsers = {};
 		quizModule.liveState.revealAnswer = false;
 		quizModule.liveState.questionNumber += 1;
 		quizModule.liveState.question =
@@ -110,7 +122,6 @@
 			activeQuiz={quizModule.liveState}
 			players={playersModule.players}
 			onAnswer={handleAnwser}
-			answers={currentAnswers}
 			onNextQuestion={handleNextQuestion}
 			onQuizEnd={() => quizModule.endQuiz()}
 		/>

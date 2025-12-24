@@ -8,13 +8,12 @@
 	interface Props {
 		activeQuiz: ActiveQuiz;
 		players: Player[];
-		answers?: Record<string, string>;
 		onAnswer?: (playerId: string, answerId: string) => void;
 		onNextQuestion?: () => void;
 		onQuizEnd?: () => void;
 	}
 
-	let { activeQuiz, players, answers = {}, onAnswer, onNextQuestion, onQuizEnd }: Props = $props();
+	let { activeQuiz, players, onAnswer, onNextQuestion, onQuizEnd }: Props = $props();
 
 	let speedWinnerId = $state<string | null>(null);
 	let showWinnerSelection = $state(false);
@@ -150,10 +149,11 @@
 						<PlayerAvatar {player} />
 						<div
 							class="bubble"
-							class:has-answered={answers[player.id]}
-							class:correct={activeQuiz.revealAnswer && isOptionCorrect(answers[player.id])}
+							class:has-answered={activeQuiz.playerAnwsers[player.id]}
+							class:correct={activeQuiz.revealAnswer &&
+								isOptionCorrect(activeQuiz.playerAnwsers[player.id])}
 						>
-							{answers[player.id] ? 'Répondu' : '...'}
+							{activeQuiz.playerAnwsers[player.id] ? 'Répondu' : '...'}
 						</div>
 					</div>
 				{/each}

@@ -1,35 +1,31 @@
 import { browser } from '$app/environment';
 import type { App } from '$lib/state/app.svelte';
+import { BaseModule } from '$lib/state/base-module.svelte';
 import { events } from '$lib/stores/event-store';
 import { toasts } from '$lib/stores/toast-store';
 import type { ChatMessage } from '$lib/types/chat';
 
 const LOCAL_STORAGE_KEY = 'baltrou_chat_history';
 
-export class ChatModule {
-	app: App;
+export class ChatModule extends BaseModule {
+	protected async onLoad() {
+		this.loadFromLocalStorage();
+		this.listenToMessageEvents();
+	}
 	messages = $state<ChatMessage[]>([]);
 	isLoaded = $state(false);
 
 	constructor(app: App) {
-		this.app = app;
+		super(app);
 		if (browser) {
 			this.load();
 		}
-		console.log('[CHAT] loaded chat module');
-	}
-
-	load() {
-		if (this.isLoaded) return;
-		this.loadFromLocalStorage();
-		this.listenToMessageEvents();
-		this.isLoaded = true;
 	}
 
 	private loadFromLocalStorage() {
 		const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
 		if (!stored) {
-			console.log('[CHAT] nothing found in localstorage');
+			this.log('nothing found in localstorage');
 			return;
 		}
 		try {
@@ -40,7 +36,7 @@ export class ChatModule {
 			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify([]));
 			return;
 		}
-		console.log(`[CHAT] Loaded ${this.messages.length} messages`);
+		this.log(`Loaded ${this.messages.length} messages`);
 	}
 
 	private listenToMessageEvents() {
@@ -66,5 +62,6 @@ export class ChatModule {
 	clearMessages() {
 		this.messages = [];
 		this.saveToStorage();
+		toasts.add('Chat cleared !', 'success');
 	}
 }

@@ -40,4 +40,5 @@ export interface ActiveQuiz {
 	question: QuizQuestion;
 	revealAnswer: boolean;
 	currentPlayerIndex: number;
+	playerAnwsers: Record<string, string>;
 }

@@ -1,4 +1,5 @@
 import type { App } from '$lib/state/app.svelte';
+import { events } from '$lib/stores/event-store';
 import { toasts } from '$lib/stores/toast-store';
 import type { ActiveQuiz, Quiz, QuizMetadata } from '$lib/types/activities/quiz';
 
@@ -10,6 +11,7 @@ export class QuizModule {
 	isLoaded = $state(false);
 	constructor(app: App) {
 		this.app = app;
+		this.listenToUpdates();
 		console.log('[QUIZ] Loaded');
 	}
 
@@ -39,6 +41,17 @@ export class QuizModule {
 			console.log(`[QUIZ] Loaded active quiz`);
 		}
 		this.isLoaded = true;
+	}
+
+	private listenToUpdates() {
+		console.log('[QUIZ] Started listening...');
+		events.subscribe((e) => {
+			if (e?.type == 'quiz_update') {
+				console.log('[QUIZ] Received an update');
+				this.isLoaded = false;
+				this.load();
+			}
+		});
 	}
 
 	async uploadQuiz(file: File) {
@@ -87,7 +100,8 @@ export class QuizModule {
 				questionNumber: 0,
 				revealAnswer: false,
 				mode: quiz.mode,
-				currentPlayerIndex: 0
+				currentPlayerIndex: 0,
+				playerAnwsers: {}
 			};
 			console.log(`[QUIZ] loaded quiz ${quizId}`);
 		} else {
