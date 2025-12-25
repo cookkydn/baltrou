@@ -4,6 +4,7 @@ import { error, json } from '@sveltejs/kit';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import mime from 'mime/lite';
+import eventBus from '$lib/server/event-bus.js';
 export async function PUT({ cookies, request, params }) {
 	const user = await getUserFromCookies(cookies);
 	if (!user) {
@@ -11,6 +12,10 @@ export async function PUT({ cookies, request, params }) {
 	}
 	const { score } = await request.json();
 	setScore(user.id, params.id, score);
+	eventBus.emit(`event:${user.id}`, {
+		type: 'player_score_update',
+		data: { id: params.id, score }
+	});
 	return json({ score });
 }
 

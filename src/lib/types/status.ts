@@ -1,5 +1,11 @@
+/**
+ * @deprecated use ConnectionStatus from `$lib/types/connection-status` instead
+ */
 export type ConnexionState = 'connecting' | 'connected' | 'error';
 
+/**
+ * @deprecated use ConnectionStatus from `$lib/types/connection-status` instead
+ */
 export enum ConnectionStatus {
 	'DISCONNECTED',
 	'CONNECTING',
