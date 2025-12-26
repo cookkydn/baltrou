@@ -3,6 +3,9 @@ import { BaseModule } from '$lib/state/base-module.svelte';
 import { toasts } from '$lib/stores/toast-store';
 import type { ConnectionStatus } from '$lib/types/connection-status';
 import { SvelteURL } from 'svelte/reactivity';
+import { LightModule } from './light/light.svelte';
+
+const LOCAL_STORAGE_KEY = 'baltrou_fiak_url';
 
 /**
  * Fiak is an internal api developped by Foustouille
@@ -12,8 +15,10 @@ import { SvelteURL } from 'svelte/reactivity';
 export class FiakModule extends BaseModule {
 	baseUrl?: string = $state(undefined);
 	connectionStatus: ConnectionStatus = $state('DISCONNECTED');
+	lightModule: LightModule;
 	constructor(app: App) {
 		super(app);
+		this.lightModule = new LightModule(app, this);
 	}
 
 	private async ping(): Promise<boolean> {
@@ -46,5 +51,31 @@ export class FiakModule extends BaseModule {
 		return url;
 	}
 
-	protected async onLoad() {}
+	private fetchBaseUrlFromLocalStorage() {
+		const value = localStorage.getItem(LOCAL_STORAGE_KEY);
+		if (!value) return undefined;
+		return value;
+	}
+
+	private setBaseUrlIntoLocalStorage() {
+		if (this.baseUrl) {
+			localStorage.setItem(LOCAL_STORAGE_KEY, this.baseUrl);
+		} else {
+			localStorage.removeItem(LOCAL_STORAGE_KEY);
+		}
+	}
+
+	protected async onLoad() {
+		this.baseUrl = this.fetchBaseUrlFromLocalStorage();
+		if (this.baseUrl) {
+			const success = await this.ping();
+			if (success) {
+				this.connectionStatus = 'CONNECTED';
+			} else {
+				this.connectionStatus = 'ERROR';
+			}
+		} else {
+			this.connectionStatus = 'DISCONNECTED';
+		}
+	}
 }

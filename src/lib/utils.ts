@@ -4,6 +4,7 @@ import type { Writable } from 'svelte/store';
  * @param {import('svelte/store').Writable} store - Le store Svelte
  * @param {string|number} uuid - L'ID à chercher
  * @param {function} callback - La modification à apporter
+ * @deprecated change to svelte 5 runes instead
  */
 export const updateStoreItem = <T extends { uuid: string }>(
 	store: Writable<T[]>,
@@ -27,6 +28,6 @@ export function jsonReplacer(key: string, value: any) {
 	}
 	return value;
 }
- 
+
 /** Function that does nothing at all */
 export const noop = () => {};
