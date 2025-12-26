@@ -19,11 +19,11 @@
 	} = $props();
 
 	function onRedAction() {
-		fetch(`${$lightApiUrl}/pulse/255/0/0/1`);
+		fetch(`${$lightApiUrl}/blink/255/0/0`);
 	}
 
 	function onGreenAction() {
-		fetch(`${$lightApiUrl}/pulse/0/255/0/1`);
+		fetch(`${$lightApiUrl}/blink/0/255/0`);
 	}
 </script>
 

@@ -13,11 +13,14 @@
 	};
 
 	let ambiances: Ambiance[] = $state([
-		{ name: 'Doux', selected: true, color: '#FFFFFF', sound: 'Lofi' },
-		{ name: 'Vif', selected: false, color: '#FF0000', sound: 'Rock' },
-		{ name: 'Coloré', selected: false, color: '#0000FF', sound: 'Pop' },
-		{ name: 'Sombre', selected: false, color: '#000000', sound: 'Jazz' },
-		{ name: 'Chaleureux', selected: false, color: '#00FF00', sound: 'Acoustic' }
+		{ name: 'Full', selected: true, color: '#FFFFFF', sound: '' },
+		{ name: 'Demi', selected: false, color: '#787878', sound: '' },
+		{ name: 'Night', selected: false, color: '#323232', sound: '' },
+		{ name: 'Halogène', selected: false, color: '#FF7832', sound: '' },
+		{ name: 'Baltrou', selected: false, color: '#FF32FF', sound: '' },
+		{ name: 'Lagoon', selected: false, color: '#32FFFF', sound: '' },
+		{ name: 'Low light', selected: false, color: '#FF1414', sound: '' },
+		{ name: 'Off', selected: false, color: '#000000', sound: '' }
 	]);
 
 	function playSound(sound: Sound) {
