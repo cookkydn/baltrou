@@ -2,7 +2,6 @@
 	import {
 		EyeOff,
 		ChartArea,
-		Pin,
 		BadgeDollarSign,
 		Terminal,
 		PartyPopper,
@@ -12,7 +11,8 @@
 		Monitor,
 		Cast,
 		RadioTower,
-		PanelTop
+		FileQuestionMark,
+		Medal
 	} from '@lucide/svelte';
 	import SegmentedToggle from '$lib/ui/SegmentedToggle.svelte';
 	import { lightApiUrl } from '$lib/stores/fiak-store';
@@ -94,7 +94,8 @@
 				{ label: 'Main', value: 'main', icon: Monitor },
 				{ label: 'WL', value: 'wl', icon: Cast },
 				{ label: 'TP', value: 'teleport', icon: RadioTower },
-				{ label: 'Baltrou', value: 'baltrou', icon: PanelTop }
+				{ label: 'Classement', value: 'rankings', icon: Medal },
+				{ label: 'Quiz', value: 'quiz', icon: FileQuestionMark }
 			]
 		}
 	];
